@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice App</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=PT+Sans&family=Spartan:wght@100;200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <aside>
+      <div class="logo-container">
+        <img src="images/logo.svg" alt="logo-icon" />
+        <div class="bottom-half"></div>
+      </div>
+
+      <div class="mode-and-avatar">
+        <div class="modes">
+          <img
+            src="images/icon-moon.svg"
+            alt="dark mode icon"
+            class="dark-mode-icon"
+          />
+          <img
+            src="images/icon-sun.svg"
+            alt="light mode icon"
+            class="light-mode-icon"
+          />
+        </div>
+        <div class="avatar">
+          <i class="bx bxs-user-account" style="color: #7e88c3"></i>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <div class="invoice-details">
+          <h1>Invoices</h1>
+          <p>There are 7 total invoices</p>
+        </div>
+
+        <div class="right-side">
+          <div class="filter-section">
+            <div class="filter-container" id="filter-container">
+              <p>Filter by status</p>
+              <img src="images/icon-arrow-down.svg" alt="down arrow" />
+            </div>
+
+            <ul id="filter-content">
+              <li>
+                <input type="checkbox" name="paid" />
+                <label for="paid">Paid</label>
+              </li>
+              <li>
+                <input type="checkbox" name="pending" />
+                <label for="pending">Pending</label>
+              </li>
+              <li>
+                <input type="checkbox" name="draft" />
+                <label for="draft">Draft</label>
+              </li>
+            </ul>
+          </div>
+
+          <button>
+            <div>
+              <img src="images/icon-plus.svg" alt="plus icon" />
+            </div>
+            <p>New Invoice</p>
+          </button>
+        </div>
+      </header>
+
+      <section>
+        <article>
+          <div class="left-side">
+            <p class="code-id"><span>#</span>XM9141</p>
+            <p class="due-date">Due 20 Sep 2021</p>
+            <p class="name">Alex Grim</p>
+          </div>
+
+          <div class="right-side">
+            <p class="amount">$556</p>
+            <div class="status">
+              <i class="bx bxs-circle" style="color: orange"></i>
+              <p>Pending</p>
+            </div>
+            <img src="images/icon-arrow-right.svg" alt="right arrow icon" />
+          </div>
+        </article>
+
+        <article>
+          <div class="left-side">
+            <p class="code-id"><span>#</span>XM9141</p>
+            <p class="due-date">Due 20 Sep 2021</p>
+            <p class="name">Alex Grim</p>
+          </div>
+
+          <div class="right-side">
+            <p class="amount">$556</p>
+            <div class="status">
+              <i class="bx bxs-circle" style="color: orange"></i>
+              <p>Pending</p>
+            </div>
+            <img src="images/icon-arrow-right.svg" alt="right arrow icon" />
+          </div>
+        </article>
+
+        <article>
+          <div class="left-side">
+            <p class="code-id"><span>#</span>XM9141</p>
+            <p class="due-date">Due 20 Sep 2021</p>
+            <p class="name">Alex Grim</p>
+          </div>
+
+          <div class="right-side">
+            <p class="amount">$556</p>
+            <div class="status">
+              <i class="bx bxs-circle" style="color: orange"></i>
+              <p>Pending</p>
+            </div>
+            <img src="images/icon-arrow-right.svg" alt="right arrow icon" />
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

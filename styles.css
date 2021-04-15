@@ -1,0 +1,420 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  font-family: "Spartan", sans-serif;
+  background: #f8f8fb;
+}
+
+body aside {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  width: 100px;
+  background: #373b53;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+body aside .logo-container {
+  position: relative;
+  width: 100%;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  height: 6rem;
+  background: #7b5cfa;
+}
+
+body aside .logo-container img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(1.2);
+          transform: translate(-50%, -50%) scale(1.2);
+  z-index: 10;
+}
+
+body aside .logo-container .bottom-half {
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  bottom: 0;
+  background: #9381df;
+  border-bottom-right-radius: 1.5rem;
+  border-top-left-radius: 1.5rem;
+  z-index: 1;
+}
+
+body aside .mode-and-avatar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+body aside .mode-and-avatar .modes,
+body aside .mode-and-avatar .avatar {
+  width: 100%;
+  height: 5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+body aside .mode-and-avatar .modes {
+  border-bottom: 1px solid #494e6e;
+}
+
+body aside .mode-and-avatar .modes img {
+  cursor: pointer;
+}
+
+body aside .mode-and-avatar .modes .light-mode-icon {
+  display: none;
+}
+
+body aside .mode-and-avatar .avatar i {
+  font-size: 1.5rem;
+}
+
+body main {
+  min-height: 100vh;
+  width: calc(100vw - 100px);
+  margin-left: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 4rem 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body main header {
+  width: 60%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+body main header .invoice-details h1 {
+  font-weight: 700;
+}
+
+body main header .invoice-details p {
+  font-size: 0.8rem;
+  color: darkgrey;
+  margin-top: 10px;
+}
+
+body main header .right-side {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body main header .right-side .filter-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 4rem;
+  position: relative;
+}
+
+body main header .right-side .filter-section .filter-container {
+  cursor: pointer;
+  display: inherit;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+body main header .right-side .filter-section .filter-container p {
+  font-size: 0.8rem;
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+body main header .right-side .filter-section .filter-container img {
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+body main header .right-side .filter-section .filter-container.show ~ ul {
+  display: block;
+}
+
+body main header .right-side .filter-section .filter-container.show img {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+body main header .right-side .filter-section ul {
+  display: none;
+  background: #fff;
+  position: absolute;
+  top: 3rem;
+  left: -3rem;
+  list-style: none;
+  width: 200px;
+  padding: 1.5rem;
+  border-radius: 5px;
+  -webkit-box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.1);
+          box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+
+body main header .right-side .filter-section ul li {
+  margin: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body main header .right-side .filter-section ul li input[type="checkbox"] {
+  position: relative;
+  background: #dfe3fa;
+  margin-right: 15px;
+  cursor: pointer;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  height: 15px;
+  width: 15px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+}
+
+body main header .right-side .filter-section ul li input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1px;
+  display: block;
+  visibility: hidden;
+  height: 15px;
+  width: 15px;
+  border-radius: 3px;
+  background: url(images/icon-check.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-transform: scale(4);
+          transform: scale(4);
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+body main header .right-side .filter-section ul li input[type="checkbox"]:hover {
+  border: 2px solid #7b5cfa;
+}
+
+body main header .right-side .filter-section ul li input[type="checkbox"]:checked {
+  background: #7b5cfa;
+  border: none;
+}
+
+body main header .right-side .filter-section ul li input[type="checkbox"]:checked::after {
+  visibility: visible;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+body main header .right-side .filter-section ul li label {
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+body main header .right-side button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  width: 150px;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  border: none;
+  outline: none;
+  background: #7b5cfa;
+  cursor: pointer;
+}
+
+body main header .right-side button:active {
+  -webkit-transform: scale(0.95);
+          transform: scale(0.95);
+}
+
+body main header .right-side button div {
+  height: 30px;
+  width: 30px;
+  background: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 50%;
+}
+
+body main header .right-side button p {
+  margin-left: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+body main section {
+  margin-top: 5rem;
+  width: 60%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body main section article {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  margin-bottom: 1rem;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+body main section article:hover {
+  border: 1px solid #7b5cfa;
+}
+
+body main section article .left-side,
+body main section article .right-side {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body main section article .left-side .code-id {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+body main section article .left-side .code-id span {
+  color: gray;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+body main section article .left-side .due-date,
+body main section article .left-side .name {
+  margin-left: 2rem;
+  font-size: 0.8rem;
+  color: darkgrey;
+}
+
+body main section article .right-side .amount {
+  font-weight: 700;
+  margin-right: 2rem;
+}
+
+body main section article .right-side .status {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.8rem;
+  border-radius: 5px;
+  background: rgba(255, 165, 0, 0.1);
+  margin-right: 1.5rem;
+}
+
+body main section article .right-side .status i {
+  font-size: 0.6rem;
+  margin-right: 10px;
+}
+
+body main section article .right-side .status p {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: orange;
+}
+/*# sourceMappingURL=styles.css.map */

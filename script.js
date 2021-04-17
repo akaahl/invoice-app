@@ -16,7 +16,7 @@ function setColorMode() {
 setColorMode();
 
 addNewInvoiceBtn.addEventListener('click', () => {
-  formContainer.classList.toggle('show');
+  body.classList.toggle('form-show');
 });
 
 modeSelector.addEventListener('click', e => {

@@ -20,6 +20,19 @@ body {
   font-family: 'Spartan', sans-serif;
   background: $bg;
   transition: all 0.3s ease-in;
+  overflow-x: hidden;
+
+  &.form-show {
+    overflow: hidden;
+
+    form {
+      visibility: visible;
+
+      .inner-container {
+        left: 0%;
+      }
+    }
+  }
 
   &[data-theme='dark'] {
     background: $dark-bg;
@@ -494,14 +507,6 @@ body {
     display: block;
     visibility: hidden;
     transition: all 0.6s ease-in-out;
-
-    &.show {
-      visibility: visible;
-
-      .inner-container {
-        left: 0%;
-      }
-    }
 
     .inner-container {
       height: 100%;

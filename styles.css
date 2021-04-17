@@ -10,6 +10,19 @@ body {
   background: #f8f8fb;
   -webkit-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
+  overflow-x: hidden;
+}
+
+body.form-show {
+  overflow: hidden;
+}
+
+body.form-show form {
+  visibility: visible;
+}
+
+body.form-show form .inner-container {
+  left: 0%;
 }
 
 body[data-theme='dark'] {
@@ -533,14 +546,6 @@ body form {
   visibility: hidden;
   -webkit-transition: all 0.6s ease-in-out;
   transition: all 0.6s ease-in-out;
-}
-
-body form.show {
-  visibility: visible;
-}
-
-body form.show .inner-container {
-  left: 0%;
 }
 
 body form .inner-container {

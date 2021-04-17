@@ -6,8 +6,64 @@
 }
 
 body {
-  font-family: "Spartan", sans-serif;
+  font-family: 'Spartan', sans-serif;
   background: #f8f8fb;
+  -webkit-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+  overflow: hidden;
+}
+
+body[data-theme='dark'] {
+  background: #141625;
+}
+
+body[data-theme='dark'] aside .mode-and-avatar .modes .dark-mode-icon {
+  display: none;
+}
+
+body[data-theme='dark'] aside .mode-and-avatar .modes .light-mode-icon {
+  display: block;
+}
+
+body[data-theme='dark'] main header .invoice-details h1 {
+  color: #fff;
+}
+
+body[data-theme='dark'] main header .invoice-details p {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main header .right-side .filter-section .filter-container p {
+  color: #fff;
+}
+
+body[data-theme='dark'] main section article {
+  background: #1e2139;
+}
+
+body[data-theme='dark'] main section article.draft .right-side .status {
+  background: rgba(55, 59, 83, 0.3);
+}
+
+body[data-theme='dark'] main section article.draft .right-side .status i {
+  color: #fff;
+}
+
+body[data-theme='dark'] main section article.draft .right-side .status p {
+  color: #fff;
+}
+
+body[data-theme='dark'] main section article .left-side .code-id,
+body[data-theme='dark'] main section article .left-side .name {
+  color: #fff;
+}
+
+body[data-theme='dark'] main section article .left-side .due-date {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main section article .right-side .amount {
+  color: #fff;
 }
 
 body aside {
@@ -31,6 +87,7 @@ body aside {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  z-index: 10;
 }
 
 body aside .logo-container {
@@ -97,6 +154,12 @@ body aside .mode-and-avatar .modes {
 
 body aside .mode-and-avatar .modes img {
   cursor: pointer;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+body aside .mode-and-avatar .modes .dark-mode-icon {
+  display: block;
 }
 
 body aside .mode-and-avatar .modes .light-mode-icon {
@@ -225,7 +288,7 @@ body main header .right-side .filter-section ul li {
           align-items: center;
 }
 
-body main header .right-side .filter-section ul li input[type="checkbox"] {
+body main header .right-side .filter-section ul li input[type='checkbox'] {
   position: relative;
   background: #dfe3fa;
   margin-right: 15px;
@@ -240,8 +303,8 @@ body main header .right-side .filter-section ul li input[type="checkbox"] {
   outline: none;
 }
 
-body main header .right-side .filter-section ul li input[type="checkbox"]::after {
-  content: "";
+body main header .right-side .filter-section ul li input[type='checkbox']::after {
+  content: '';
   position: absolute;
   top: 0;
   left: -1px;
@@ -259,16 +322,16 @@ body main header .right-side .filter-section ul li input[type="checkbox"]::after
   transition: all 0.2s ease-in;
 }
 
-body main header .right-side .filter-section ul li input[type="checkbox"]:hover {
+body main header .right-side .filter-section ul li input[type='checkbox']:hover {
   border: 2px solid #7b5cfa;
 }
 
-body main header .right-side .filter-section ul li input[type="checkbox"]:checked {
+body main header .right-side .filter-section ul li input[type='checkbox']:checked {
   background: #7b5cfa;
   border: none;
 }
 
-body main header .right-side .filter-section ul li input[type="checkbox"]:checked::after {
+body main header .right-side .filter-section ul li input[type='checkbox']:checked::after {
   visibility: visible;
   -webkit-transform: scale(1);
           transform: scale(1);
@@ -361,6 +424,42 @@ body main section article:hover {
   border: 1px solid #7b5cfa;
 }
 
+body main section article.pending .right-side .status {
+  background: rgba(255, 165, 0, 0.1);
+}
+
+body main section article.pending .right-side .status i {
+  color: orange;
+}
+
+body main section article.pending .right-side .status p {
+  color: orange;
+}
+
+body main section article.paid .right-side .status {
+  background: rgba(51, 214, 159, 0.1);
+}
+
+body main section article.paid .right-side .status i {
+  color: #33d69f;
+}
+
+body main section article.paid .right-side .status p {
+  color: #33d69f;
+}
+
+body main section article.draft .right-side .status {
+  background: rgba(55, 59, 83, 0.05);
+}
+
+body main section article.draft .right-side .status i {
+  color: #373b53;
+}
+
+body main section article.draft .right-side .status p {
+  color: #373b53;
+}
+
 body main section article .left-side,
 body main section article .right-side {
   display: -webkit-box;
@@ -372,6 +471,7 @@ body main section article .right-side {
 }
 
 body main section article .left-side .code-id {
+  width: 4rem;
   font-size: 0.8rem;
   font-weight: 700;
 }
@@ -401,9 +501,13 @@ body main section article .right-side .status {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 7rem;
   padding: 0.8rem;
   border-radius: 5px;
-  background: rgba(255, 165, 0, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   margin-right: 1.5rem;
 }
 
@@ -415,6 +519,27 @@ body main section article .right-side .status i {
 body main section article .right-side .status p {
   font-size: 0.8rem;
   font-weight: 700;
-  color: orange;
+  color: #000;
+}
+
+body form {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 5;
+}
+
+body form .inner-container {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+  left: 0rem;
+  border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  background: #fff;
+  padding: 3rem 1rem 1rem 10rem;
 }
 /*# sourceMappingURL=styles.css.map */

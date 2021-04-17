@@ -1,13 +1,13 @@
-:root {
-}
-
 $violet: hsl(252, 94%, 67%);
 $dark-grayish-blue: #373b53;
+$green: #33d69f;
 $pale-blue: #dfe3fa;
 $white: #fff;
 $black: #000;
 $border-radius: 1.5rem;
 $bg: #f8f8fb;
+$dark-bg: #141625;
+$dark-article-bg: #1e2139;
 
 * {
   margin: 0;
@@ -16,8 +16,91 @@ $bg: #f8f8fb;
 }
 
 body {
-  font-family: "Spartan", sans-serif;
+  font-family: 'Spartan', sans-serif;
   background: $bg;
+  transition: all 0.3s ease-in;
+  overflow: hidden;
+
+  &[data-theme='dark'] {
+    background: $dark-bg;
+
+    aside {
+      .mode-and-avatar {
+        .modes {
+          .dark-mode-icon {
+            display: none;
+          }
+
+          .light-mode-icon {
+            display: block;
+          }
+        }
+      }
+    }
+
+    main {
+      header {
+        .invoice-details {
+          h1 {
+            color: $white;
+          }
+
+          p {
+            color: $pale-blue;
+          }
+        }
+
+        .right-side {
+          .filter-section {
+            .filter-container {
+              p {
+                color: $white;
+              }
+            }
+          }
+        }
+      }
+
+      section {
+        article {
+          background: $dark-article-bg;
+
+          &.draft {
+            .right-side {
+              .status {
+                background: rgba($dark-grayish-blue, 0.3);
+
+                i {
+                  color: $white;
+                }
+
+                p {
+                  color: $white;
+                }
+              }
+            }
+          }
+
+          .left-side {
+            .code-id,
+            .name {
+              color: $white;
+            }
+
+            .due-date {
+              color: $pale-blue;
+            }
+          }
+
+          .right-side {
+            .amount {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+  }
 
   aside {
     height: 100vh;
@@ -31,6 +114,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    z-index: 10;
 
     .logo-container {
       position: relative;
@@ -80,6 +164,11 @@ body {
 
         img {
           cursor: pointer;
+          transition: all 0.3s linear;
+        }
+
+        .dark-mode-icon {
+          display: block;
         }
 
         .light-mode-icon {
@@ -178,7 +267,7 @@ body {
               display: flex;
               align-items: center;
 
-              input[type="checkbox"] {
+              input[type='checkbox'] {
                 position: relative;
                 background: $pale-blue;
                 margin-right: 15px;
@@ -191,7 +280,7 @@ body {
                 outline: none;
 
                 &::after {
-                  content: "";
+                  content: '';
                   position: absolute;
                   top: 0;
                   left: -1px;
@@ -287,6 +376,54 @@ body {
           border: 1px solid $violet;
         }
 
+        &.pending {
+          .right-side {
+            .status {
+              background: rgba(orange, 0.1);
+
+              i {
+                color: orange;
+              }
+
+              p {
+                color: orange;
+              }
+            }
+          }
+        }
+
+        &.paid {
+          .right-side {
+            .status {
+              background: rgba($green, 0.1);
+
+              i {
+                color: $green;
+              }
+
+              p {
+                color: $green;
+              }
+            }
+          }
+        }
+
+        &.draft {
+          .right-side {
+            .status {
+              background: rgba($dark-grayish-blue, 0.05);
+
+              i {
+                color: $dark-grayish-blue;
+              }
+
+              p {
+                color: $dark-grayish-blue;
+              }
+            }
+          }
+        }
+
         .left-side,
         .right-side {
           display: flex;
@@ -295,6 +432,7 @@ body {
 
         .left-side {
           .code-id {
+            width: 4rem;
             font-size: 0.8rem;
             font-weight: 700;
 
@@ -322,9 +460,11 @@ body {
           .status {
             display: flex;
             align-items: center;
+            justify-content: center;
+            width: 7rem;
             padding: 0.8rem;
             border-radius: 5px;
-            background: rgba(orange, 0.1);
+            background: rgba($black, 0.1);
             margin-right: 1.5rem;
 
             i {
@@ -335,11 +475,32 @@ body {
             p {
               font-size: 0.8rem;
               font-weight: 700;
-              color: orange;
+              color: $black;
             }
           }
         }
       }
+    }
+  }
+
+  form {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba($black, 0.7);
+    z-index: 5;
+
+    .inner-container {
+      height: 100%;
+      width: 50%;
+      position: absolute;
+      left: 0rem;
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      background: $white;
+      padding: 3rem 1rem 1rem 10rem;
     }
   }
 }

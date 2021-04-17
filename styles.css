@@ -10,7 +10,6 @@ body {
   background: #f8f8fb;
   -webkit-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
-  overflow: hidden;
 }
 
 body[data-theme='dark'] {
@@ -530,16 +529,312 @@ body form {
   left: 0;
   background: rgba(0, 0, 0, 0.7);
   z-index: 5;
+  display: block;
+  visibility: hidden;
+  -webkit-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
+
+body form.show {
+  visibility: visible;
+}
+
+body form.show .inner-container {
+  left: 0%;
 }
 
 body form .inner-container {
   height: 100%;
   width: 50%;
   position: absolute;
-  left: 0rem;
+  left: -100%;
   border-top-right-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   background: #fff;
-  padding: 3rem 1rem 1rem 10rem;
+  padding: 3rem 2rem 1rem 10rem;
+  -webkit-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
+
+body form .inner-container .form-content {
+  margin-top: 3rem;
+  padding-right: 2rem;
+  height: 70%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+body form .inner-container .form-content p,
+body form .inner-container .form-content label {
+  font-size: 12px;
+}
+
+body form .inner-container .form-content .bill-from p {
+  color: #7b5cfa;
+  font-weight: 700;
+}
+
+body form .inner-container .form-content .bill-from label {
+  color: #7b5cfa;
+  display: block;
+  margin-top: 1rem;
+}
+
+body form .inner-container .form-content .bill-from input[type='text'] {
+  height: 3rem;
+  width: 100%;
+  border: 1px solid #dfe3fa;
+  margin-top: 10px;
+  border-radius: 3px;
+  outline: none;
+}
+
+body form .inner-container .form-content .bill-from .more-details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 1rem;
+}
+
+body form .inner-container .form-content .bill-from .more-details div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 30%;
+}
+
+body form .inner-container .form-content .bill-to {
+  margin-top: 3rem;
+}
+
+body form .inner-container .form-content .bill-to p {
+  color: #7b5cfa;
+  font-weight: 700;
+}
+
+body form .inner-container .form-content .bill-to label {
+  color: #7b5cfa;
+  display: block;
+  margin-top: 1rem;
+}
+
+body form .inner-container .form-content .bill-to input[type='text'],
+body form .inner-container .form-content .bill-to input[type='email'] {
+  height: 3rem;
+  width: 100%;
+  border: 1px solid #dfe3fa;
+  margin-top: 10px;
+  border-radius: 3px;
+  outline: none;
+  padding: 1rem;
+}
+
+body form .inner-container .form-content .bill-to input[type='text']::-webkit-input-placeholder,
+body form .inner-container .form-content .bill-to input[type='email']::-webkit-input-placeholder {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+body form .inner-container .form-content .bill-to input[type='text']:-ms-input-placeholder,
+body form .inner-container .form-content .bill-to input[type='email']:-ms-input-placeholder {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+body form .inner-container .form-content .bill-to input[type='text']::-ms-input-placeholder,
+body form .inner-container .form-content .bill-to input[type='email']::-ms-input-placeholder {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+body form .inner-container .form-content .bill-to input[type='text']::placeholder,
+body form .inner-container .form-content .bill-to input[type='email']::placeholder {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+body form .inner-container .form-content .bill-to .more-details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 1rem;
+}
+
+body form .inner-container .form-content .bill-to .more-details div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 30%;
+}
+
+body form .inner-container .form-content .bill-to .payment-details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 1rem;
+}
+
+body form .inner-container .form-content .bill-to .payment-details div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 45%;
+}
+
+body form .inner-container .form-content .bill-to .payment-details div input[type='date'],
+body form .inner-container .form-content .bill-to .payment-details div select {
+  height: 3rem;
+  width: 100%;
+  border: 1px solid #dfe3fa;
+  margin-top: 10px;
+  border-radius: 3px;
+  outline: none;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+body form .inner-container .form-content .bill-to .payment-details div select {
+  padding-right: 4rem;
+}
+
+body form .inner-container .form-content .bill-to .item-list h4 {
+  margin-top: 3rem;
+  color: rgba(55, 59, 83, 0.8);
+  font-size: 1.5rem;
+}
+
+body form .inner-container .form-content .bill-to .item-list button {
+  margin-top: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  border-radius: 2rem;
+  border: none;
+  outline: none;
+  padding: 1rem;
+  background: #fff;
+  font-weight: 700;
+  color: #7e88c3;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  cursor: pointer;
+}
+
+body form .inner-container .form-content .bill-to .item-list button img {
+  margin-right: 5px;
+}
+
+body form .inner-container .form-content .bill-to .item-list button:hover {
+  background: #dfe3fa;
+}
+
+body form .inner-container .button-selections {
+  margin-top: 2rem;
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 10px 10px;
+  -ms-grid-columns: (1fr)[6];
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas: 'discard . . . draft send';
+}
+
+body form .inner-container .button-selections .discard-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: discard;
+  outline: none;
+  border: none;
+  border-radius: 2rem;
+  padding: 1rem 2rem;
+  color: #7e88c3;
+  background: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+body form .inner-container .button-selections .discard-btn:hover {
+  background: #dfe3fa;
+}
+
+body form .inner-container .button-selections .draft-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+  grid-area: draft;
+  outline: none;
+  border: none;
+  padding: 1rem;
+  border-radius: 2rem;
+  background: #373b53;
+  width: 8rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #7e88c3;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+body form .inner-container .button-selections .draft-btn:hover {
+  background: #000;
+}
+
+body form .inner-container .button-selections .send-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 6;
+  grid-area: send;
+  outline: none;
+  border: none;
+  padding: 1rem;
+  border-radius: 2rem;
+  width: 8rem;
+  font-weight: 700;
+  background: #7b5cfa;
+  color: #fff;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+body form .inner-container .button-selections .send-btn:hover {
+  background: rgba(123, 92, 250, 0.8);
 }
 /*# sourceMappingURL=styles.css.map */

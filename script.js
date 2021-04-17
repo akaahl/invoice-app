@@ -1,9 +1,12 @@
 const body = document.getElementsByTagName('body')[0];
 const modeSelector = document.querySelector('.modes');
+const addNewInvoiceBtn = document.getElementById('add-new-invoice');
 const filterContainer = document.getElementById('filter-container');
 const filterContent = document.getElementById('filter-content');
 const mainContainer = document.getElementById('main-container');
 const sectionElement = document.getElementById('section-element');
+const formContainer = document.getElementById('form-container');
+
 const dataUrl = `data.json`;
 
 function setColorMode() {
@@ -11,6 +14,10 @@ function setColorMode() {
 }
 
 setColorMode();
+
+addNewInvoiceBtn.addEventListener('click', () => {
+  formContainer.classList.toggle('show');
+});
 
 modeSelector.addEventListener('click', e => {
   if (e.target.classList.contains('dark-mode-icon')) {

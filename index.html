@@ -75,7 +75,7 @@
             </ul>
           </div>
 
-          <button>
+          <button id="add-new-invoice">
             <div>
               <img src="images/icon-plus.svg" alt="plus icon" />
             </div>
@@ -93,18 +93,24 @@
             <div class="bill-from">
               <p>Bill From</p>
 
-              <label for="street">Street Address</label>
+              <label for="street" class="label-street">Street Address</label>
               <input type="text" id="street" />
 
               <div class="more-details">
-                <label for="city">City</label>
-                <input type="text" id="city" />
+                <div>
+                  <label for="city">City</label>
+                  <input type="text" id="city" />
+                </div>
 
-                <label for="post-code">Post Code</label>
-                <input type="text" id="post-code" />
+                <div>
+                  <label for="post-code">Post Code</label>
+                  <input type="text" id="post-code" />
+                </div>
 
-                <label for="country">Country</label>
-                <input type="text" id="country" />
+                <div>
+                  <label for="country">Country</label>
+                  <input type="text" id="country" />
+                </div>
               </div>
             </div>
 
@@ -125,27 +131,37 @@
               <input type="text" id="client-street" />
 
               <div class="more-details">
-                <label for="client-city">City</label>
-                <input type="text" id="client-city" />
+                <div>
+                  <label for="client-city">City</label>
+                  <input type="text" id="client-city" />
+                </div>
 
-                <label for="client-post-code">Post Code</label>
-                <input type="text" id="client-post-code" />
+                <div>
+                  <label for="client-post-code">Post Code</label>
+                  <input type="text" id="client-post-code" />
+                </div>
 
-                <label for="client-country">Country</label>
-                <input type="text" id="client-country" />
+                <div>
+                  <label for="client-country">Country</label>
+                  <input type="text" id="client-country" />
+                </div>
               </div>
 
               <div class="payment-details">
-                <label for="invoice-date">Invoice Date</label>
-                <input type="date" id="invoice-date" />
+                <div>
+                  <label for="invoice-date">Invoice Date</label>
+                  <input type="date" id="invoice-date" />
+                </div>
 
-                <label for="payment-terms">Payment Terms</label>
-                <select name="payment-terms" id="payment-terms">
-                  <option value="net-1-day">Net 1 Day</option>
-                  <option value="net-7-days">Net 7 Days</option>
-                  <option value="net-14-days">Net 14 Days</option>
-                  <option value="net-30-days">Net 30 Days</option>
-                </select>
+                <div>
+                  <label for="payment-terms">Payment Terms</label>
+                  <select name="payment-terms" id="payment-terms">
+                    <option value="net-1-day">Net 1 Day</option>
+                    <option value="net-7-days">Net 7 Days</option>
+                    <option value="net-14-days">Net 14 Days</option>
+                    <option value="net-30-days">Net 30 Days</option>
+                  </select>
+                </div>
               </div>
 
               <label for="description">Description</label>
@@ -166,9 +182,9 @@
           </div>
 
           <div class="button-selections">
-            <button id="discard-btn">Discard</button>
-            <button id="draft-btn">Save As Draft</button>
-            <button id="send-btn">Save & Send</button>
+            <button id="discard-btn" class="discard-btn">Discard</button>
+            <button id="draft-btn" class="draft-btn">Save as Draft</button>
+            <button id="send-btn" class="send-btn">Save & Send</button>
           </div>
         </div>
       </form>

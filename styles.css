@@ -3,6 +3,7 @@
   padding: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-family: 'Spartan', sans-serif;
 }
 
 body {
@@ -19,6 +20,7 @@ body.form-show {
 
 body.form-show form {
   visibility: visible;
+  opacity: 1;
 }
 
 body.form-show form .inner-container {
@@ -47,6 +49,18 @@ body[data-theme='dark'] main header .invoice-details p {
 
 body[data-theme='dark'] main header .right-side .filter-section .filter-container p {
   color: #fff;
+}
+
+body[data-theme='dark'] main header .right-side .filter-section ul {
+  background: #252945;
+}
+
+body[data-theme='dark'] main header .right-side .filter-section ul li {
+  color: #fff;
+}
+
+body[data-theme='dark'] main header .right-side .filter-section ul li input[type='checkbox'] {
+  background: #1e2139;
 }
 
 body[data-theme='dark'] main section article {
@@ -78,12 +92,99 @@ body[data-theme='dark'] main section article .right-side .amount {
   color: #fff;
 }
 
+body[data-theme='dark'] main form .inner-container {
+  background: #141625;
+}
+
+body[data-theme='dark'] main form .inner-container h2 {
+  color: #fff;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content label {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text'],
+body[data-theme='dark'] main form .inner-container .form-content input[type='email'],
+body[data-theme='dark'] main form .inner-container .form-content input[type='date'],
+body[data-theme='dark'] main form .inner-container .form-content select {
+  background: #1e2139;
+  border: 1px solid #141625 !important;
+  caret-color: #7b5cfa;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text']:focus,
+body[data-theme='dark'] main form .inner-container .form-content input[type='email']:focus,
+body[data-theme='dark'] main form .inner-container .form-content input[type='date']:focus,
+body[data-theme='dark'] main form .inner-container .form-content select:focus {
+  border: 1px solid #7b5cfa !important;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text']::-webkit-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='email']::-webkit-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='date']::-webkit-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content select::-webkit-input-placeholder {
+  color: #fff;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text']:-ms-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='email']:-ms-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='date']:-ms-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content select:-ms-input-placeholder {
+  color: #fff;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text']::-ms-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='email']::-ms-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='date']::-ms-input-placeholder,
+body[data-theme='dark'] main form .inner-container .form-content select::-ms-input-placeholder {
+  color: #fff;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text']::placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='email']::placeholder,
+body[data-theme='dark'] main form .inner-container .form-content input[type='date']::placeholder,
+body[data-theme='dark'] main form .inner-container .form-content select::placeholder {
+  color: #fff;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content input[type='text']::-webkit-datetime-edit-fields-wrapper,
+body[data-theme='dark'] main form .inner-container .form-content input[type='email']::-webkit-datetime-edit-fields-wrapper,
+body[data-theme='dark'] main form .inner-container .form-content input[type='date']::-webkit-datetime-edit-fields-wrapper,
+body[data-theme='dark'] main form .inner-container .form-content select::-webkit-datetime-edit-fields-wrapper {
+  color: #fff !important;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content select option {
+  color: #fff !important;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content .bill-to .item-list h4 {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content .bill-to .item-list button {
+  background: #252945;
+}
+
+body[data-theme='dark'] main form .inner-container .form-content .bill-to .item-list button:hover {
+  background: #1e2139;
+}
+
+body[data-theme='dark'] main form .inner-container .button-selections .discard-btn {
+  background: #1e2139;
+}
+
+body[data-theme='dark'] main form .inner-container .button-selections .discard-btn:hover {
+  background: #fff;
+}
+
 body aside {
   height: 100vh;
   position: fixed;
   left: 0;
   width: 100px;
-  background: #373b53;
+  background: #1e2139;
   border-top-right-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
   display: -webkit-box;
@@ -319,7 +420,7 @@ body main header .right-side .filter-section ul li input[type='checkbox']::after
   content: '';
   position: absolute;
   top: 0;
-  left: -1px;
+  left: -0.5px;
   display: block;
   visibility: hidden;
   height: 15px;
@@ -540,12 +641,13 @@ body form {
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.3);
   z-index: 5;
   display: block;
   visibility: hidden;
-  -webkit-transition: all 0.6s ease-in-out;
-  transition: all 0.6s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
 }
 
 body form .inner-container {
@@ -570,6 +672,15 @@ body form .inner-container .form-content {
   overflow-x: hidden;
 }
 
+body form .inner-container .form-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+body form .inner-container .form-content::-webkit-scrollbar-thumb {
+  background: rgba(123, 92, 250, 0.7);
+  border-radius: 5px;
+}
+
 body form .inner-container .form-content p,
 body form .inner-container .form-content label {
   font-size: 12px;
@@ -591,8 +702,11 @@ body form .inner-container .form-content .bill-from input[type='text'] {
   width: 100%;
   border: 1px solid #dfe3fa;
   margin-top: 10px;
-  border-radius: 3px;
+  border-radius: 5px;
+  padding: 1rem;
   outline: none;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 body form .inner-container .form-content .bill-from .more-details {
@@ -640,31 +754,37 @@ body form .inner-container .form-content .bill-to input[type='email'] {
   width: 100%;
   border: 1px solid #dfe3fa;
   margin-top: 10px;
-  border-radius: 3px;
+  border-radius: 5px;
   outline: none;
   padding: 1rem;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 body form .inner-container .form-content .bill-to input[type='text']::-webkit-input-placeholder,
 body form .inner-container .form-content .bill-to input[type='email']::-webkit-input-placeholder {
+  font-size: 12px;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.4);
 }
 
 body form .inner-container .form-content .bill-to input[type='text']:-ms-input-placeholder,
 body form .inner-container .form-content .bill-to input[type='email']:-ms-input-placeholder {
+  font-size: 12px;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.4);
 }
 
 body form .inner-container .form-content .bill-to input[type='text']::-ms-input-placeholder,
 body form .inner-container .form-content .bill-to input[type='email']::-ms-input-placeholder {
+  font-size: 12px;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.4);
 }
 
 body form .inner-container .form-content .bill-to input[type='text']::placeholder,
 body form .inner-container .form-content .bill-to input[type='email']::placeholder {
+  font-size: 12px;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.4);
 }
@@ -723,14 +843,34 @@ body form .inner-container .form-content .bill-to .payment-details div select {
   width: 100%;
   border: 1px solid #dfe3fa;
   margin-top: 10px;
-  border-radius: 3px;
+  border-radius: 5px;
   outline: none;
   padding: 1rem;
   cursor: pointer;
 }
 
+body form .inner-container .form-content .bill-to .payment-details div input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  -webkit-filter: invert(53%) sepia(70%) saturate(7354%) hue-rotate(238deg) brightness(109%) contrast(96%);
+          filter: invert(53%) sepia(70%) saturate(7354%) hue-rotate(238deg) brightness(109%) contrast(96%);
+}
+
+body form .inner-container .form-content .bill-to .payment-details div input[type='date']::-webkit-datetime-edit-fields-wrapper {
+  font-family: 'Spartan', sans-serif;
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(123, 92, 250, 0.7);
+}
+
 body form .inner-container .form-content .bill-to .payment-details div select {
-  padding-right: 4rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+body form .inner-container .form-content .bill-to .payment-details div select option {
+  font-weight: 700;
+  color: rgba(123, 92, 250, 0.7);
 }
 
 body form .inner-container .form-content .bill-to .item-list h4 {
@@ -810,6 +950,7 @@ body form .inner-container .button-selections .draft-btn {
   padding: 1rem;
   border-radius: 2rem;
   background: #373b53;
+  font-size: 12px;
   width: 8rem;
   font-weight: 700;
   cursor: pointer;
@@ -832,6 +973,7 @@ body form .inner-container .button-selections .send-btn {
   border-radius: 2rem;
   width: 8rem;
   font-weight: 700;
+  font-size: 12px;
   background: #7b5cfa;
   color: #fff;
   cursor: pointer;

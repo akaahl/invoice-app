@@ -8,12 +8,14 @@ $black: #000;
 $border-radius: 1.5rem;
 $bg: #f8f8fb;
 $dark-bg: #141625;
+$button-dark-bg: #252945;
 $dark-article-bg: #1e2139;
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Spartan', sans-serif;
 }
 
 body {
@@ -27,6 +29,7 @@ body {
 
     form {
       visibility: visible;
+      opacity: 1;
 
       .inner-container {
         left: 0%;
@@ -68,6 +71,18 @@ body {
             .filter-container {
               p {
                 color: $white;
+              }
+            }
+
+            ul {
+              background: $button-dark-bg;
+
+              li {
+                color: $white;
+
+                input[type='checkbox'] {
+                  background: $dark-article-bg;
+                }
               }
             }
           }
@@ -112,6 +127,75 @@ body {
           }
         }
       }
+
+      form {
+        .inner-container {
+          background: $dark-bg;
+
+          h2 {
+            color: $white;
+          }
+
+          .form-content {
+            label {
+              color: $pale-blue;
+            }
+
+            input[type='text'],
+            input[type='email'],
+            input[type='date'],
+            select {
+              &:focus {
+                border: 1px solid $violet !important;
+              }
+
+              &::placeholder {
+                color: $white;
+              }
+
+              &::-webkit-datetime-edit-fields-wrapper {
+                color: $white !important;
+              }
+
+              background: $dark-article-bg;
+              border: 1px solid $dark-bg !important;
+              caret-color: $violet;
+            }
+
+            select {
+              option {
+                color: $white !important;
+              }
+            }
+
+            .bill-to {
+              .item-list {
+                h4 {
+                  color: $pale-blue;
+                }
+
+                button {
+                  background: $button-dark-bg;
+
+                  &:hover {
+                    background: $dark-article-bg;
+                  }
+                }
+              }
+            }
+          }
+
+          .button-selections {
+            .discard-btn {
+              background: $dark-article-bg;
+
+              &:hover {
+                background: $white;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -120,7 +204,7 @@ body {
     position: fixed;
     left: 0;
     width: 100px;
-    background: $dark-grayish-blue;
+    background: $dark-article-bg;
     border-top-right-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
     display: flex;
@@ -296,7 +380,7 @@ body {
                   content: '';
                   position: absolute;
                   top: 0;
-                  left: -1px;
+                  left: -0.5px;
                   display: block;
                   visibility: hidden;
                   height: 15px;
@@ -502,11 +586,12 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba($black, 0.7);
+    background: rgba($black, 0.3);
     z-index: 5;
     display: block;
     visibility: hidden;
-    transition: all 0.6s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
 
     .inner-container {
       height: 100%;
@@ -526,6 +611,15 @@ body {
         width: 100%;
         overflow-y: scroll;
         overflow-x: hidden;
+
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba($violet, 0.7);
+          border-radius: 5px;
+        }
 
         p,
         label {
@@ -549,8 +643,10 @@ body {
             width: 100%;
             border: 1px solid $pale-blue;
             margin-top: 10px;
-            border-radius: 3px;
+            border-radius: 5px;
+            padding: 1rem;
             outline: none;
+            transition: all 0.3s ease-in-out;
           }
 
           .more-details {
@@ -587,11 +683,13 @@ body {
             width: 100%;
             border: 1px solid $pale-blue;
             margin-top: 10px;
-            border-radius: 3px;
+            border-radius: 5px;
             outline: none;
             padding: 1rem;
+            transition: all 0.3s ease-in-out;
 
             &::placeholder {
+              font-size: 12px;
               font-weight: 700;
               color: rgba($black, 0.4);
             }
@@ -627,14 +725,36 @@ body {
                 width: 100%;
                 border: 1px solid $pale-blue;
                 margin-top: 10px;
-                border-radius: 3px;
+                border-radius: 5px;
                 outline: none;
                 padding: 1rem;
                 cursor: pointer;
               }
 
+              input[type='date'] {
+                &::-webkit-calendar-picker-indicator {
+                  cursor: pointer;
+                  filter: invert(53%) sepia(70%) saturate(7354%)
+                    hue-rotate(238deg) brightness(109%) contrast(96%);
+                }
+
+                &::-webkit-datetime-edit-fields-wrapper {
+                  font-family: 'Spartan', sans-serif;
+                  font-weight: 900;
+                  font-size: 12px;
+                  color: rgba($violet, 0.7);
+                  // color: $violet;
+                  // display: none;
+                }
+              }
+
               select {
-                padding-right: 4rem;
+                appearance: none;
+
+                option {
+                  font-weight: 700;
+                  color: rgba($violet, 0.7);
+                }
               }
             }
           }
@@ -705,6 +825,7 @@ body {
           padding: 1rem;
           border-radius: 2rem;
           background: $dark-grayish-blue;
+          font-size: 12px;
           width: 8rem;
           font-weight: 700;
           cursor: pointer;
@@ -724,6 +845,7 @@ body {
           border-radius: 2rem;
           width: 8rem;
           font-weight: 700;
+          font-size: 12px;
           background: $violet;
           color: $white;
           cursor: pointer;

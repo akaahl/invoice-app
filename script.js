@@ -6,19 +6,43 @@ const filterContent = document.getElementById('filter-content');
 const mainContainer = document.getElementById('main-container');
 const sectionElement = document.getElementById('section-element');
 const formContainer = document.getElementById('form-container');
-
+const invoiceDate = document.getElementById('invoice-date');
+const discardBtn = document.getElementById('discard-btn');
 const dataUrl = `data.json`;
 
+// Format datepicker based on today's date (form modal)
+function formatInvoiceDate() {
+  let today = new Date();
+  invoiceDate.valueAsDate = today;
+}
+
+formatInvoiceDate();
+
+// Load color theme from local storage on document load
 function setColorMode() {
   body.setAttribute('data-theme', localStorage.getItem('theme-mode'));
 }
 
 setColorMode();
 
+// Show form modal
 addNewInvoiceBtn.addEventListener('click', () => {
   body.classList.toggle('form-show');
 });
 
+// Remove form modal
+discardBtn.addEventListener('click', () => {
+  body.classList.remove('form-show');
+});
+
+// Click anywhere other than the inner form will trigger close modal
+formContainer.addEventListener('click', e => {
+  if (e.target.matches('.form-container')) {
+    body.classList.toggle('form-show');
+  }
+});
+
+// Select and save color theme
 modeSelector.addEventListener('click', e => {
   if (e.target.classList.contains('dark-mode-icon')) {
     body.setAttribute('data-theme', 'dark');
@@ -31,10 +55,21 @@ modeSelector.addEventListener('click', e => {
   }
 });
 
+// Show/remove filter status selections
 filterContainer.addEventListener('click', () => {
   filterContainer.classList.toggle('show');
 });
 
+document.addEventListener('click', e => {
+  if (
+    filterContainer.classList.contains('show') &&
+    e.target !== filterContainer
+  ) {
+    filterContainer.classList.remove('show');
+  }
+});
+
+// Get data from data.json
 async function getData(url) {
   const res = await fetch(url);
   const data = await res.json();
@@ -113,3 +148,7 @@ async function initialUpdateDOM() {
 }
 
 initialUpdateDOM();
+
+formContainer.addEventListener('submit', e => {
+  e.preventDefault();
+});

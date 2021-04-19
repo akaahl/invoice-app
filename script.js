@@ -8,6 +8,9 @@ const sectionElement = document.getElementById('section-element');
 const formContainer = document.getElementById('form-container');
 const invoiceDate = document.getElementById('invoice-date');
 const discardBtn = document.getElementById('discard-btn');
+const formContent = document.getElementById('form-content');
+const addNewItem = document.getElementById('add-new-item');
+const h4ItemList = document.getElementById('h4-item-list');
 const dataUrl = `data.json`;
 
 // Format datepicker based on today's date (form modal)
@@ -56,15 +59,13 @@ modeSelector.addEventListener('click', e => {
 });
 
 // Show/remove filter status selections
-filterContainer.addEventListener('click', () => {
-  filterContainer.classList.toggle('show');
-});
-
 document.addEventListener('click', e => {
-  if (
-    filterContainer.classList.contains('show') &&
-    e.target !== filterContainer
-  ) {
+  const parentElement = e.target.parentElement;
+  if (parentElement.classList.contains('filter-container')) {
+    filterContainer.classList.toggle('show');
+  }
+
+  if (!e.target.closest('.filter-section')) {
     filterContainer.classList.remove('show');
   }
 });
@@ -148,6 +149,99 @@ async function initialUpdateDOM() {
 }
 
 initialUpdateDOM();
+
+formContent.addEventListener('focusout', e => {
+  const targetElement = e.target;
+
+  function fieldsEmpty(element) {
+    element.classList.add('empty');
+    element.previousElementSibling.style.color = 'orangered';
+  }
+
+  function fieldsValid(element) {
+    element.classList.remove('empty');
+    element.previousElementSibling.style.color = 'hsl(252, 94%, 67%)';
+  }
+
+  function validateEmail(elem, email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(email.toLowerCase())) {
+      fieldsValid(elem);
+    } else {
+      fieldsEmpty(elem);
+    }
+  }
+
+  if (
+    targetElement.classList.contains('fields') &&
+    targetElement.value !== ''
+  ) {
+    fieldsValid(targetElement);
+    console.log(true);
+  }
+
+  if (targetElement.classList.contains('fields') && targetElement.value == '') {
+    fieldsEmpty(targetElement);
+  }
+
+  if (targetElement.getAttribute('type') == 'email') {
+    validateEmail(targetElement, targetElement.value);
+  }
+});
+
+addNewItem.addEventListener('click', () => {
+  const itemElement = document.createElement('div');
+  itemElement.classList.add('item');
+
+  itemElement.innerHTML = `
+    <div class="name">
+                    <label for="item-name">Name</label>
+                    <input
+                      type="text"
+                      id="item-name"
+                      name="name-of-item"
+                      autocomplete="nope"
+                      class="fields"
+                    />
+                  </div>
+
+                  <div class="quantity">
+                    <label for="item-quantity">Qty.</label>
+                    <input
+                      type="text"
+                      id="item-quantity"
+                      name="quantity-of-item"
+                      autocomplete="nope"
+                      class="fields"
+                    />
+                  </div>
+
+                  <div class="price">
+                    <label for="item-price">Price.</label>
+                    <input
+                      type="text"
+                      id="item-price"
+                      name="price-of-item"
+                      autocomplete="nope"
+                      class="fields"
+                    />
+                  </div>
+
+                  <div class="total">
+                    <label for="item-total">Total</label>
+                    <p id="item-total">0</p>
+                  </div>
+
+                  <img
+                    src="images/icon-delete.svg"
+                    alt="delete btn icon"
+                    class="delete-btn"
+                  />
+  `;
+
+  h4ItemList.insertAdjacentElement('afterend', itemElement);
+});
 
 formContainer.addEventListener('submit', e => {
   e.preventDefault();

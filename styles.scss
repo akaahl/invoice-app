@@ -145,6 +145,10 @@ body {
             input[type='email'],
             input[type='date'],
             select {
+              &.empty {
+                border: 1px solid #ff4500 !important;
+              }
+
               &:focus {
                 border: 1px solid $violet !important;
               }
@@ -157,6 +161,7 @@ body {
                 color: $white !important;
               }
 
+              color: $white;
               background: $dark-article-bg;
               border: 1px solid $dark-bg !important;
               caret-color: $violet;
@@ -624,6 +629,7 @@ body {
         p,
         label {
           font-size: 12px;
+          transition: all 0.3s ease-in-out;
         }
 
         .bill-from {
@@ -639,6 +645,14 @@ body {
           }
 
           input[type='text'] {
+            &:focus {
+              border: 1px solid $violet;
+            }
+
+            &.empty {
+              border: 1px solid orangered;
+            }
+
             height: 3rem;
             width: 100%;
             border: 1px solid $pale-blue;
@@ -679,6 +693,14 @@ body {
 
           input[type='text'],
           input[type='email'] {
+            &.empty {
+              border: 1px solid orangered;
+            }
+
+            &:focus {
+              border: 1px solid $violet;
+            }
+
             height: 3rem;
             width: 100%;
             border: 1px solid $pale-blue;
@@ -721,6 +743,10 @@ body {
 
               input[type='date'],
               select {
+                &:focus {
+                  border: 1px solid $violet !important;
+                }
+
                 height: 3rem;
                 width: 100%;
                 border: 1px solid $pale-blue;
@@ -764,6 +790,48 @@ body {
               margin-top: 3rem;
               color: rgba($dark-grayish-blue, 0.8);
               font-size: 1.5rem;
+            }
+
+            .item {
+              display: grid;
+              grid-template-columns: 3fr 1fr 2fr 1fr 0.2fr;
+              grid-gap: 0 15px;
+              grid-template-areas: 'name quantity price total delete';
+              position: relative;
+
+              .name {
+                grid-area: name;
+              }
+
+              .quantity {
+                grid-area: quantity;
+              }
+
+              .price {
+                grid-area: price;
+              }
+
+              .total {
+                grid-area: total;
+
+                p {
+                  user-select: none;
+                  margin: 25px 0 0 10px;
+                }
+              }
+
+              img {
+                grid-area: delete;
+                justify-self: end;
+                align-self: end;
+                margin-bottom: 20px;
+                cursor: pointer;
+
+                &:hover {
+                  filter: invert(42%) sepia(56%) saturate(6715%)
+                    hue-rotate(1deg) brightness(102%) contrast(106%);
+                }
+              }
             }
 
             button {

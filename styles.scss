@@ -448,7 +448,7 @@ body {
           }
 
           p {
-            margin-left: 0.8rem;
+            margin-left: 0.5rem;
             font-weight: 700;
             color: $white;
           }
@@ -798,6 +798,13 @@ body {
               grid-gap: 0 15px;
               grid-template-areas: 'name quantity price total delete';
               position: relative;
+              transition: all 0.3s linear;
+
+              &.remove {
+                transform: translateX(-20px);
+                opacity: 0;
+                visibility: hidden;
+              }
 
               .name {
                 grid-area: name;
@@ -857,6 +864,22 @@ body {
               &:hover {
                 background: $pale-blue;
               }
+            }
+
+            small,
+            p {
+              color: orangered;
+              display: block;
+              font-size: 12px;
+              font-weight: 500;
+            }
+
+            small {
+              margin-top: 3rem;
+            }
+
+            p {
+              margin-top: 10px;
             }
           }
         }

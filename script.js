@@ -10,8 +10,28 @@ const invoiceDate = document.getElementById('invoice-date');
 const discardBtn = document.getElementById('discard-btn');
 const formContent = document.getElementById('form-content');
 const addNewItem = document.getElementById('add-new-item');
+const itemListContainer = document.getElementById('item-list');
 const h4ItemList = document.getElementById('h4-item-list');
+const inputFields = document.querySelectorAll('.fields');
+const sendBtn = document.getElementById('send-btn');
 const dataUrl = `data.json`;
+
+// Reset input fields in modal
+function resetInputFields() {
+  inputFields.forEach(field => {
+    field.value = '';
+    field.classList.remove('empty');
+    field.previousElementSibling.style.color = 'hsl(252, 94%, 67%)';
+  });
+
+  let items = document.querySelectorAll('.item');
+
+  if (items) {
+    items.forEach(item => {
+      item.remove();
+    });
+  }
+}
 
 // Format datepicker based on today's date (form modal)
 function formatInvoiceDate() {
@@ -30,18 +50,22 @@ setColorMode();
 
 // Show form modal
 addNewInvoiceBtn.addEventListener('click', () => {
-  body.classList.toggle('form-show');
+  body.classList.add('form-show');
 });
 
 // Remove form modal
 discardBtn.addEventListener('click', () => {
+  console.log(true);
   body.classList.remove('form-show');
+  resetInputFields();
 });
 
-// Click anywhere other than the inner form will trigger close modal
+// Click anywhere other than the inner form will trigger close form modal
 formContainer.addEventListener('click', e => {
   if (e.target.matches('.form-container')) {
-    body.classList.toggle('form-show');
+    body.classList.remove('form-show');
+    resetInputFields();
+    console.log(true);
   }
 });
 
@@ -114,6 +138,7 @@ function formatDate(dateStr) {
   return dateArray.join(' ');
 }
 
+// Update DOM on document load
 async function initialUpdateDOM() {
   const dataArray = await getData(dataUrl);
 
@@ -150,35 +175,36 @@ async function initialUpdateDOM() {
 
 initialUpdateDOM();
 
+// Functions used for validations of input and email fields
+function fieldsEmpty(element) {
+  element.classList.add('empty');
+  element.previousElementSibling.style.color = 'orangered';
+}
+
+function fieldsValid(element) {
+  element.classList.remove('empty');
+  element.previousElementSibling.style.color = 'hsl(252, 94%, 67%)';
+}
+
+function validateEmail(elem, email) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if (re.test(email.toLowerCase())) {
+    fieldsValid(elem);
+  } else {
+    fieldsEmpty(elem);
+  }
+}
+
+// Validate input text and email fields on focusout
 formContent.addEventListener('focusout', e => {
   const targetElement = e.target;
-
-  function fieldsEmpty(element) {
-    element.classList.add('empty');
-    element.previousElementSibling.style.color = 'orangered';
-  }
-
-  function fieldsValid(element) {
-    element.classList.remove('empty');
-    element.previousElementSibling.style.color = 'hsl(252, 94%, 67%)';
-  }
-
-  function validateEmail(elem, email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (re.test(email.toLowerCase())) {
-      fieldsValid(elem);
-    } else {
-      fieldsEmpty(elem);
-    }
-  }
 
   if (
     targetElement.classList.contains('fields') &&
     targetElement.value !== ''
   ) {
     fieldsValid(targetElement);
-    console.log(true);
   }
 
   if (targetElement.classList.contains('fields') && targetElement.value == '') {
@@ -190,7 +216,9 @@ formContent.addEventListener('focusout', e => {
   }
 });
 
+// Add new item within the form
 addNewItem.addEventListener('click', () => {
+  console.log(true);
   const itemElement = document.createElement('div');
   itemElement.classList.add('item');
 
@@ -199,10 +227,9 @@ addNewItem.addEventListener('click', () => {
                     <label for="item-name">Name</label>
                     <input
                       type="text"
-                      id="item-name"
                       name="name-of-item"
                       autocomplete="nope"
-                      class="fields"
+                      class="fields item-name"
                     />
                   </div>
 
@@ -210,10 +237,9 @@ addNewItem.addEventListener('click', () => {
                     <label for="item-quantity">Qty.</label>
                     <input
                       type="text"
-                      id="item-quantity"
                       name="quantity-of-item"
                       autocomplete="nope"
-                      class="fields"
+                      class="fields item-quantity"
                     />
                   </div>
 
@@ -221,16 +247,15 @@ addNewItem.addEventListener('click', () => {
                     <label for="item-price">Price.</label>
                     <input
                       type="text"
-                      id="item-price"
                       name="price-of-item"
                       autocomplete="nope"
-                      class="fields"
+                      class="fields item-price"
                     />
                   </div>
 
                   <div class="total">
                     <label for="item-total">Total</label>
-                    <p id="item-total">0</p>
+                    <p class="item-total">0</p>
                   </div>
 
                   <img
@@ -240,9 +265,57 @@ addNewItem.addEventListener('click', () => {
                   />
   `;
 
-  h4ItemList.insertAdjacentElement('afterend', itemElement);
+  const quantity = itemElement.children[1].children[1];
+  const price = itemElement.children[2].children[1];
+  const total = itemElement.children[3].children[1];
+
+  function updateTotal() {
+    if (quantity.value == '' || price.value == '') {
+      total.textContent = '0';
+    }
+
+    if (quantity.value >= 0 && price.value >= 0) {
+      total.textContent = +quantity.value * +price.value;
+    }
+  }
+
+  quantity.addEventListener('change', updateTotal);
+  price.addEventListener('change', updateTotal);
+
+  itemElement.addEventListener('click', e => {
+    if (e.target.classList.contains('delete-btn')) {
+      itemElement.classList.add('remove');
+      setTimeout(() => {
+        itemElement.remove();
+      }, 350);
+    }
+  });
+  addNewItem.insertAdjacentElement('beforebegin', itemElement);
+});
+
+// Prevent from adding new item when pressing Enter
+addNewItem.addEventListener('keydown', e => {
+  if (e.code == 'Enter' || e.key == 'Enter') {
+    e.preventDefault();
+  }
 });
 
 formContainer.addEventListener('submit', e => {
   e.preventDefault();
+});
+
+sendBtn.addEventListener('click', () => {
+  inputFields.forEach(field => {
+    if (field.value !== '') {
+      fieldsValid(field);
+    }
+
+    if (field.value == '') {
+      fieldsEmpty(field);
+    }
+
+    if (field.getAttribute('type') == 'email') {
+      validateEmail(field, field.value);
+    }
+  });
 });

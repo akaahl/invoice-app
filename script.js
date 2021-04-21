@@ -13,10 +13,10 @@ const addNewItem = document.getElementById('add-new-item');
 const itemListContainer = document.getElementById('item-list');
 const h4ItemList = document.getElementById('h4-item-list');
 const inputFields = document.querySelectorAll('.fields');
+const saveAsDraftBtn = document.getElementById('draft-btn');
 const sendBtn = document.getElementById('send-btn');
 const dataUrl = `data.json`;
-let fieldAlert;
-console.log(fieldAlert);
+let dataArray, fieldAlert;
 
 // Reset input fields in modal
 function resetInputFields() {
@@ -52,7 +52,6 @@ addNewInvoiceBtn.addEventListener('click', () => {
 
 // Remove form modal
 discardBtn.addEventListener('click', () => {
-  console.log(true);
   body.classList.remove('form-show');
   resetInputFields();
 });
@@ -70,7 +69,6 @@ formContainer.addEventListener('click', e => {
   if (e.target.matches('.form-container')) {
     body.classList.remove('form-show');
     resetInputFields();
-    console.log(fieldAlert);
   }
 });
 
@@ -146,7 +144,9 @@ function formatDate(dateStr) {
 
 // Update DOM on document load
 async function initialUpdateDOM() {
-  const dataArray = await getData(dataUrl);
+  dataArray = [...(await getData(dataUrl))];
+
+  console.log(dataArray);
 
   dataArray.forEach(item => {
     const articleElement = document.createElement('article');
@@ -307,6 +307,25 @@ addNewItem.addEventListener('keydown', e => {
 
 formContainer.addEventListener('submit', e => {
   e.preventDefault();
+});
+
+// Save all the information and add it into dataArray
+saveAsDraftBtn.addEventListener('click', e => {
+  let invoiceInfo = {};
+
+  const alphabets = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+
+  function randomAlphabets() {
+    return alphabets[Math.floor(Math.random() * alphabets.length)];
+  }
+
+  function randomNumbers() {
+    return Math.floor(1000 + Math.random() * 9000);
+  }
+
+  invoiceInfo.id = `${randomAlphabets()}${randomAlphabets()}${randomNumbers()}`;
+
+  console.log(invoiceInfo);
 });
 
 // Perform validation if form is not complete and item is not added

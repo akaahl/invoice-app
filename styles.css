@@ -906,6 +906,14 @@ body form .inner-container .form-content .bill-to .payment-details div select op
   color: rgba(123, 92, 250, 0.7);
 }
 
+body form .inner-container .form-content .bill-to .item-list.field-empty-alert small {
+  display: block;
+}
+
+body form .inner-container .form-content .bill-to .item-list.item-empty-alert .item-alert {
+  display: block;
+}
+
 body form .inner-container .form-content .bill-to .item-list h4 {
   margin-top: 3rem;
   color: rgba(55, 59, 83, 0.8);
@@ -1014,18 +1022,19 @@ body form .inner-container .form-content .bill-to .item-list button:hover {
 }
 
 body form .inner-container .form-content .bill-to .item-list small,
-body form .inner-container .form-content .bill-to .item-list p {
+body form .inner-container .form-content .bill-to .item-list .item-alert {
   color: orangered;
   display: block;
   font-size: 12px;
   font-weight: 500;
+  display: none;
 }
 
 body form .inner-container .form-content .bill-to .item-list small {
   margin-top: 3rem;
 }
 
-body form .inner-container .form-content .bill-to .item-list p {
+body form .inner-container .form-content .bill-to .item-list .item-alert {
   margin-top: 10px;
 }
 

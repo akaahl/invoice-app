@@ -15,6 +15,8 @@ const h4ItemList = document.getElementById('h4-item-list');
 const inputFields = document.querySelectorAll('.fields');
 const sendBtn = document.getElementById('send-btn');
 const dataUrl = `data.json`;
+let fieldAlert;
+console.log(fieldAlert);
 
 // Reset input fields in modal
 function resetInputFields() {
@@ -31,15 +33,10 @@ function resetInputFields() {
       item.remove();
     });
   }
-}
 
-// Format datepicker based on today's date (form modal)
-function formatInvoiceDate() {
-  let today = new Date();
-  invoiceDate.valueAsDate = today;
+  itemListContainer.classList.remove('field-empty-alert');
+  itemListContainer.classList.remove('item-empty-alert');
 }
-
-formatInvoiceDate();
 
 // Load color theme from local storage on document load
 function setColorMode() {
@@ -60,12 +57,20 @@ discardBtn.addEventListener('click', () => {
   resetInputFields();
 });
 
+// Format datepicker based on today's date (form modal)
+function formatInvoiceDate() {
+  let today = new Date();
+  invoiceDate.valueAsDate = today;
+}
+
+formatInvoiceDate();
+
 // Click anywhere other than the inner form will trigger close form modal
 formContainer.addEventListener('click', e => {
   if (e.target.matches('.form-container')) {
     body.classList.remove('form-show');
     resetInputFields();
-    console.log(true);
+    console.log(fieldAlert);
   }
 });
 
@@ -104,6 +109,7 @@ async function getData(url) {
 
 getData(dataUrl);
 
+// These 3 functions below are used in the initialUpdateDOM
 function paymentStatus(str) {
   return str == 'paid' ? 'paid' : str == 'pending' ? 'pending' : 'draft';
 }
@@ -218,51 +224,50 @@ formContent.addEventListener('focusout', e => {
 
 // Add new item within the form
 addNewItem.addEventListener('click', () => {
-  console.log(true);
   const itemElement = document.createElement('div');
   itemElement.classList.add('item');
 
   itemElement.innerHTML = `
     <div class="name">
-                    <label for="item-name">Name</label>
-                    <input
-                      type="text"
-                      name="name-of-item"
-                      autocomplete="nope"
-                      class="fields item-name"
-                    />
-                  </div>
+      <label for="item-name">Name</label>
+      <input
+        type="text"
+        name="name-of-item"
+        autocomplete="nope"
+        class="fields item-name"
+      />
+    </div>
 
-                  <div class="quantity">
-                    <label for="item-quantity">Qty.</label>
-                    <input
-                      type="text"
-                      name="quantity-of-item"
-                      autocomplete="nope"
-                      class="fields item-quantity"
-                    />
-                  </div>
+    <div class="quantity">
+      <label for="item-quantity">Qty.</label>
+      <input
+        type="text"
+        name="quantity-of-item"
+        autocomplete="nope"
+        class="fields item-quantity"
+      />
+    </div>
 
-                  <div class="price">
-                    <label for="item-price">Price.</label>
-                    <input
-                      type="text"
-                      name="price-of-item"
-                      autocomplete="nope"
-                      class="fields item-price"
-                    />
-                  </div>
+    <div class="price">
+      <label for="item-price">Price.</label>
+      <input
+        type="text"
+        name="price-of-item"
+        autocomplete="nope"
+        class="fields item-price"
+        >
+    </div>
 
-                  <div class="total">
-                    <label for="item-total">Total</label>
-                    <p class="item-total">0</p>
-                  </div>
+    <div class="total">
+      <label for="item-total">Total</label>
+      <p class="item-total">0</p>
+    </div>
 
-                  <img
-                    src="images/icon-delete.svg"
-                    alt="delete btn icon"
-                    class="delete-btn"
-                  />
+    <img
+      src="images/icon-delete.svg"
+      alt="delete btn icon"
+      class="delete-btn"
+    />
   `;
 
   const quantity = itemElement.children[1].children[1];
@@ -304,18 +309,54 @@ formContainer.addEventListener('submit', e => {
   e.preventDefault();
 });
 
+// Perform validation if form is not complete and item is not added
 sendBtn.addEventListener('click', () => {
-  inputFields.forEach(field => {
+  // Get all input fields including dynamically added fields
+  const allFields = document.querySelectorAll('.fields');
+
+  // The variable below copy inputFields into an array so that Array.prototype.every can be used
+  let fieldsArray = [...allFields];
+
+  fieldsArray.every(field =>
+    field.value !== '' ? (fieldAlert = false) : (fieldAlert = true)
+  );
+
+  fieldsArray.forEach(field => {
     if (field.value !== '') {
       fieldsValid(field);
     }
 
     if (field.value == '') {
       fieldsEmpty(field);
+      fieldAlert = true;
     }
 
     if (field.getAttribute('type') == 'email') {
       validateEmail(field, field.value);
     }
   });
+
+  updateFormAlert(fieldAlert);
 });
+
+function updateFormAlert(alert) {
+  const fieldEmptyElement = document.getElementById('field-alert');
+  const itemEmptyElement = document.getElementById('item-alert');
+
+  if (alert) {
+    itemListContainer.classList.add('field-empty-alert');
+    itemListContainer.classList.add('item-empty-alert');
+  }
+
+  if (!alert) {
+    itemListContainer.classList.remove('field-empty-alert');
+  }
+
+  if (!document.querySelector('.item')) {
+    itemListContainer.classList.add('item-empty-alert');
+  }
+
+  if (document.querySelector('.item')) {
+    itemListContainer.classList.remove('item-empty-alert');
+  }
+}

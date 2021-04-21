@@ -786,6 +786,18 @@ body {
           }
 
           .item-list {
+            &.field-empty-alert {
+              small {
+                display: block;
+              }
+            }
+
+            &.item-empty-alert {
+              .item-alert {
+                display: block;
+              }
+            }
+
             h4 {
               margin-top: 3rem;
               color: rgba($dark-grayish-blue, 0.8);
@@ -867,18 +879,19 @@ body {
             }
 
             small,
-            p {
+            .item-alert {
               color: orangered;
               display: block;
               font-size: 12px;
               font-weight: 500;
+              display: none;
             }
 
             small {
               margin-top: 3rem;
             }
 
-            p {
+            .item-alert {
               margin-top: 10px;
             }
           }

@@ -98,7 +98,7 @@
                 type="text"
                 id="street"
                 autocomplete="nope"
-                class="fields"
+                class="fields sender-street"
               />
 
               <div class="more-details">
@@ -109,7 +109,7 @@
                     id="city"
                     name="bill-from-city"
                     autocomplete="nope"
-                    class="fields"
+                    class="fields sender-city"
                   />
                 </div>
 
@@ -119,7 +119,7 @@
                     type="text"
                     id="post-code"
                     autocomplete="nope"
-                    class="fields"
+                    class="fields sender-post-code"
                   />
                 </div>
 
@@ -129,7 +129,7 @@
                     type="text"
                     id="country"
                     autocomplete="nope"
-                    class="fields"
+                    class="fields sender-country"
                   />
                 </div>
               </div>
@@ -143,7 +143,7 @@
                 type="text"
                 id="client-name"
                 autocomplete="nope"
-                class="fields"
+                class="fields client-name"
               />
 
               <label for="client-email">Client's Email</label>
@@ -152,7 +152,7 @@
                 id="client-email"
                 placeholder="e.g. email@example.com"
                 autocomplete="nope"
-                class="fields"
+                class="fields client-email"
               />
 
               <label for="client-street">Street Address</label>
@@ -160,7 +160,7 @@
                 type="text"
                 id="client-street"
                 autocomplete="nope"
-                class="fields"
+                class="fields client-street"
               />
 
               <div class="more-details">
@@ -170,7 +170,7 @@
                     type="text"
                     id="client-city"
                     autocomplete="nope"
-                    class="fields"
+                    class="fields client-city"
                   />
                 </div>
 
@@ -180,7 +180,7 @@
                     type="text"
                     id="client-post-code"
                     autocomplete="nope"
-                    class="fields"
+                    class="fields client-post-code"
                   />
                 </div>
 
@@ -190,7 +190,7 @@
                     type="text"
                     id="client-country"
                     autocomplete="nope"
-                    class="fields"
+                    class="fields client-country"
                   />
                 </div>
               </div>
@@ -198,12 +198,16 @@
               <div class="payment-details">
                 <div>
                   <label for="invoice-date">Invoice Date</label>
-                  <input type="date" id="invoice-date" />
+                  <input type="date" id="invoice-date" class="created-at" />
                 </div>
 
                 <div>
                   <label for="payment-terms">Payment Terms</label>
-                  <select name="payment-terms" id="payment-terms">
+                  <select
+                    name="payment-terms"
+                    id="payment-terms"
+                    class="payment-terms"
+                  >
                     <option value="net-1-day">Net 1 Day</option>
                     <option value="net-7-days">Net 7 Days</option>
                     <option value="net-14-days">Net 14 Days</option>
@@ -218,7 +222,7 @@
                 id="description"
                 placeholder="e.g. Graphic Design Service"
                 autocomplete="nope"
-                class="fields"
+                class="fields client-description"
               />
 
               <div class="item-list" id="item-list">

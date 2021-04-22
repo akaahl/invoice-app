@@ -309,10 +309,10 @@ formContainer.addEventListener('submit', e => {
   e.preventDefault();
 });
 
-// Save all the information and add it into dataArray
-saveAsDraftBtn.addEventListener('click', e => {
-  let invoiceInfo = {};
+let invoiceInfo = {};
 
+// Function to save form
+function saveFormInfo() {
   const alphabets = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
 
   function randomAlphabets() {
@@ -323,9 +323,75 @@ saveAsDraftBtn.addEventListener('click', e => {
     return Math.floor(1000 + Math.random() * 9000);
   }
 
+  invoiceInfo.clientAddress = {
+    city: document.querySelector('.client-city').value,
+    country: document.querySelector('.client-country').value,
+    postCode: document.querySelector('.client-post-code').value,
+    street: document.querySelector('.client-street').value,
+  };
+
+  invoiceInfo.clientEmail = document.querySelector('.client-email').value;
+  invoiceInfo.clientName = document.querySelector('.client-name').value;
+  invoiceInfo.createdAt = document.querySelector('.created-at').value;
+  invoiceInfo.description = document.querySelector('.client-description').value;
+
+  invoiceInfo.senderAddress = {
+    city: document.querySelector('.sender-city').value,
+    country: document.querySelector('.sender-country').value,
+    postCode: document.querySelector('.sender-post-code').value,
+    street: document.querySelector('.sender-street').value,
+  };
+
   invoiceInfo.id = `${randomAlphabets()}${randomAlphabets()}${randomNumbers()}`;
+  invoiceInfo.items = [];
+
+  invoiceInfo.paymentTerms = +document
+    .querySelector('.payment-terms')
+    .value.split('-')[1];
+
+  function generatePayDue(dateString, paymentTerm) {
+    let dateArray = dateString.split('-');
+    let currentDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
+    currentDate.setDate(currentDate.getDate() + paymentTerm);
+
+    const year = currentDate.getFullYear() + '';
+    const month = currentDate.getMonth() + 1 + '';
+    const date = currentDate.getDate() + '';
+    const output = `${year}-${month < 10 ? '0' + month : month}-${date}`;
+
+    return output;
+  }
+
+  const paymentDue = generatePayDue(
+    invoiceInfo.createdAt,
+    invoiceInfo.paymentTerms
+  );
+
+  invoiceInfo.paymentDue = paymentDue;
+
+  if (document.querySelectorAll('.item')) {
+    document.querySelectorAll('.item').forEach(item => {
+      let moreItems = {
+        name: document.querySelector('.item-name').value,
+        price: document.querySelector('.item-price').value,
+        quantity: document.querySelector('.item-quantity').value,
+        total: +document.querySelector('.item-total').innerText,
+      };
+
+      invoiceInfo.items.push(moreItems);
+    });
+  }
 
   console.log(invoiceInfo);
+}
+// Save all the information and add it into dataArray
+saveAsDraftBtn.addEventListener('click', e => {
+  saveFormInfo();
+  invoiceInfo.status = 'Draft';
+
+  dataArray.unshift(invoiceInfo);
+  initialUpdateDOM();
+  console.log(dataArray);
 });
 
 // Perform validation if form is not complete and item is not added

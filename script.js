@@ -5,6 +5,7 @@ const filterContainer = document.getElementById('filter-container');
 const filterContent = document.getElementById('filter-content');
 const mainContainer = document.getElementById('main-container');
 const sectionElement = document.getElementById('section-element');
+const articleElements = document.querySelectorAll('article');
 const formContainer = document.getElementById('form-container');
 const invoiceDate = document.getElementById('invoice-date');
 const discardBtn = document.getElementById('discard-btn');
@@ -17,6 +18,7 @@ const saveAsDraftBtn = document.getElementById('draft-btn');
 const sendBtn = document.getElementById('send-btn');
 const dataUrl = `data.json`;
 let dataArray, fieldAlert;
+let invoiceInfo = {};
 
 // Reset input fields in modal
 function resetInputFields() {
@@ -142,19 +144,14 @@ function formatDate(dateStr) {
   return dateArray.join(' ');
 }
 
-// Update DOM on document load
-async function initialUpdateDOM() {
-  dataArray = [...(await getData(dataUrl))];
+// Function to create element and push it into the DOM
+function createElement(item) {
+  const articleElement = document.createElement('article');
+  articleElement.classList.add(paymentStatus(item.status));
 
-  console.log(dataArray);
+  formatDate(item.paymentDue);
 
-  dataArray.forEach(item => {
-    const articleElement = document.createElement('article');
-    articleElement.classList.add(paymentStatus(item.status));
-
-    formatDate(item.paymentDue);
-
-    articleElement.innerHTML = `
+  articleElement.innerHTML = `
           <div class="left-side">
             <p class="code-id"><span>#</span>${item.id}</p>
             <p class="due-date">Due ${formatDate(item.paymentDue)}</p>
@@ -163,8 +160,8 @@ async function initialUpdateDOM() {
 
           <div class="right-side">
             <p class="amount">${currencySymbol(item.clientAddress.country)}${
-      item.total
-    }</p>
+    item.total == undefined ? 0 : item.total
+  }</p>
             <div class="status">
               <i class="bx bxs-circle"></i>
               <p>${
@@ -175,11 +172,39 @@ async function initialUpdateDOM() {
           </div>
     `;
 
-    sectionElement.appendChild(articleElement);
-  });
+  sectionElement.appendChild(articleElement);
+}
+
+// Update DOM on document load
+async function initialUpdateDOM() {
+  dataArray = [...(await getData(dataUrl))];
+
+  dataArray.forEach(createElement);
 }
 
 initialUpdateDOM();
+
+// filterContent.addEventListener('click', e => {
+//   const targetElement = e.target;
+//   let filteredArray;
+//   // console.log(dataArray.filter(item => item.status == 'paid'));
+//   if (targetElement.getAttribute('name') == 'paid' && targetElement.checked) {
+//     filteredArray = dataArray.filter(item => item.status == 'paid');
+//     sectionElement.innerHTML = '';
+//     filteredArray.forEach(createElement);
+//   }
+
+// });
+
+const checkboxes = document.querySelectorAll('.filter-checkbox');
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', e => {
+    const targetElement = e.target;
+    if (targetElement.checked) {
+      console.log(true);
+    }
+  });
+});
 
 // Functions used for validations of input and email fields
 function fieldsEmpty(element) {
@@ -280,7 +305,7 @@ addNewItem.addEventListener('click', () => {
     }
 
     if (quantity.value >= 0 && price.value >= 0) {
-      total.textContent = +quantity.value * +price.value;
+      total.textContent = (+quantity.value * +price.value).toFixed(2);
     }
   }
 
@@ -309,8 +334,6 @@ formContainer.addEventListener('submit', e => {
   e.preventDefault();
 });
 
-let invoiceInfo = {};
-
 // Function to save form
 function saveFormInfo() {
   const alphabets = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
@@ -323,6 +346,7 @@ function saveFormInfo() {
     return Math.floor(1000 + Math.random() * 9000);
   }
 
+  // Update invoiceInfo object based on user's input
   invoiceInfo.clientAddress = {
     city: document.querySelector('.client-city').value,
     country: document.querySelector('.client-country').value,
@@ -368,62 +392,52 @@ function saveFormInfo() {
   );
 
   invoiceInfo.paymentDue = paymentDue;
+  invoiceInfo.total;
 
   if (document.querySelectorAll('.item')) {
     document.querySelectorAll('.item').forEach(item => {
       let moreItems = {
-        name: document.querySelector('.item-name').value,
-        price: document.querySelector('.item-price').value,
-        quantity: document.querySelector('.item-quantity').value,
-        total: +document.querySelector('.item-total').innerText,
+        name: item.children[0].children[1].value,
+        price: item.children[2].children[1].value,
+        quantity: item.children[1].children[1].value,
+        total: +item.children[3].children[1].innerText,
       };
 
       invoiceInfo.items.push(moreItems);
     });
+
+    invoiceInfo.total = invoiceInfo.items
+      .reduce((acc, item) => acc + item.total, 0)
+      .toFixed(2);
+  }
+}
+
+// Function when save / send btn is clicked
+function updateElements() {
+  let lastElement, firstElement;
+
+  // Function to move the last element into the first DOM position
+  function moveElement(first, second) {
+    sectionElement.insertBefore(first, second);
   }
 
-  console.log(invoiceInfo);
+  saveFormInfo();
+  dataArray.unshift(invoiceInfo);
+  createElement(dataArray[0]);
+  lastElement = [...document.querySelectorAll('article')].pop();
+  firstElement = [...document.querySelectorAll('article')].shift();
+  moveElement(lastElement, firstElement);
+  body.classList.remove('form-show');
 }
+
 // Save all the information and add it into dataArray
 saveAsDraftBtn.addEventListener('click', e => {
-  saveFormInfo();
-  invoiceInfo.status = 'Draft';
-
-  dataArray.unshift(invoiceInfo);
-  initialUpdateDOM();
-  console.log(dataArray);
+  invoiceInfo.status = 'draft';
+  updateElements();
+  resetInputFields();
 });
 
-// Perform validation if form is not complete and item is not added
-sendBtn.addEventListener('click', () => {
-  // Get all input fields including dynamically added fields
-  const allFields = document.querySelectorAll('.fields');
-
-  // The variable below copy inputFields into an array so that Array.prototype.every can be used
-  let fieldsArray = [...allFields];
-
-  fieldsArray.every(field =>
-    field.value !== '' ? (fieldAlert = false) : (fieldAlert = true)
-  );
-
-  fieldsArray.forEach(field => {
-    if (field.value !== '') {
-      fieldsValid(field);
-    }
-
-    if (field.value == '') {
-      fieldsEmpty(field);
-      fieldAlert = true;
-    }
-
-    if (field.getAttribute('type') == 'email') {
-      validateEmail(field, field.value);
-    }
-  });
-
-  updateFormAlert(fieldAlert);
-});
-
+// To be used in sendBtn click event
 function updateFormAlert(alert) {
   const fieldEmptyElement = document.getElementById('field-alert');
   const itemEmptyElement = document.getElementById('item-alert');
@@ -444,4 +458,43 @@ function updateFormAlert(alert) {
   if (document.querySelector('.item')) {
     itemListContainer.classList.remove('item-empty-alert');
   }
+
+  if (!alert && document.querySelector('.item')) {
+    // If all fields are filled and validated, then save the form info and update into DOM
+    invoiceInfo.status = 'paid';
+    updateElements();
+    resetInputFields();
+  }
 }
+
+// Perform validation if form is not complete and item is not added
+sendBtn.addEventListener('click', () => {
+  // Get all input fields including dynamically added fields
+  const allFields = document.querySelectorAll('.fields');
+
+  // The variable below copy inputFields into an array so that Array.prototype.every can be used
+  let fieldsArray = [...allFields];
+
+  fieldsArray.forEach(field => {
+    if (field.value !== '') {
+      fieldsValid(field);
+    }
+
+    if (field.value == '') {
+      fieldsEmpty(field);
+      fieldAlert = true;
+    }
+
+    if (field.getAttribute('type') == 'email') {
+      validateEmail(field, field.value);
+    }
+  });
+
+  updateFormAlert(fieldAlert);
+
+  fieldsArray.every(field => {
+    if (field.value !== '') {
+      fieldAlert = false;
+    }
+  });
+});

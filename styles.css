@@ -480,6 +480,12 @@ body main header .right-side button {
   outline: none;
   background: #7b5cfa;
   cursor: pointer;
+  -webkit-transition: 0.3s ease-in all;
+  transition: 0.3s ease-in all;
+}
+
+body main header .right-side button:hover {
+  background: rgba(123, 92, 250, 0.7);
 }
 
 body main header .right-side button:active {
@@ -543,6 +549,13 @@ body main section article {
 
 body main section article:hover {
   border: 1px solid #7b5cfa;
+}
+
+body main section article.hide {
+  opacity: 0;
+  -webkit-transform: translateY(-10px);
+          transform: translateY(-10px);
+  visibility: hidden;
 }
 
 body main section article.pending .right-side .status {
@@ -641,6 +654,374 @@ body main section article .right-side .status p {
   font-size: 0.8rem;
   font-weight: 700;
   color: #000;
+}
+
+body main .invoice-info-section {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body main .invoice-info-section .back-btn {
+  cursor: pointer;
+  width: 6rem;
+  background: none;
+  border: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+body main .invoice-info-section .back-btn p {
+  margin-left: 1.5rem;
+  font-size: 12px;
+}
+
+body main .invoice-info-section .invoice-status {
+  margin-top: 2rem;
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  -webkit-box-shadow: 2px 4px 7px rgba(0, 0, 0, 0.05);
+          box-shadow: 2px 4px 7px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 1fr 6rem;
+      grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 1fr 6rem;
+  -ms-flex-line-pack: center;
+      align-content: center;
+      grid-template-areas: 'status status-info . . . . edit delete';
+}
+
+body main .invoice-info-section .invoice-status.pending .status {
+  background: rgba(255, 165, 0, 0.1);
+}
+
+body main .invoice-info-section .invoice-status.pending .status i {
+  color: orange;
+}
+
+body main .invoice-info-section .invoice-status.pending .status p {
+  color: orange;
+}
+
+body main .invoice-info-section .invoice-status.paid .status {
+  background: rgba(51, 214, 159, 0.05);
+}
+
+body main .invoice-info-section .invoice-status.paid .status i {
+  color: #33d69f;
+}
+
+body main .invoice-info-section .invoice-status.paid .status p {
+  color: #33d69f;
+}
+
+body main .invoice-info-section .invoice-status.draft .status {
+  background: rgba(55, 59, 83, 0.05);
+}
+
+body main .invoice-info-section .invoice-status.draft .status i {
+  color: #373b53;
+}
+
+body main .invoice-info-section .invoice-status.draft .status p {
+  color: #373b53;
+}
+
+body main .invoice-info-section .invoice-status p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: status;
+  text-align: left;
+  font-size: 12px;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-status .status {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: status-info;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.1);
+  margin-right: 1.5rem;
+}
+
+body main .invoice-info-section .invoice-status .status i {
+  font-size: 0.6rem;
+  margin-right: 10px;
+}
+
+body main .invoice-info-section .invoice-status .status p {
+  font-size: 12px;
+  font-weight: 700;
+  color: #000;
+}
+
+body main .invoice-info-section .invoice-status .edit-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 7;
+  grid-area: edit;
+  background: none;
+  border: none;
+  font-weight: 700;
+  color: #7b5cfa;
+  border-radius: 2rem;
+  margin-right: 1rem;
+  padding: 1rem 1.5rem;
+  font-size: 12px;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease-in all;
+  transition: 0.3s ease-in all;
+}
+
+body main .invoice-info-section .invoice-status .edit-btn:hover {
+  background: #dfe3fa;
+}
+
+body main .invoice-info-section .invoice-status .delete-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+  grid-area: delete;
+  background: #ec5757;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  -webkit-transition: 0.3s ease-in all;
+  transition: 0.3s ease-in all;
+  font-size: 12px;
+}
+
+body main .invoice-info-section .invoice-status .delete-btn:hover {
+  background: rgba(236, 87, 87, 0.7);
+}
+
+body main .invoice-info-section .invoice-personal-details {
+  background: #fff;
+  border-radius: 5px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+body main .invoice-info-section .invoice-personal-details .top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+body main .invoice-info-section .invoice-personal-details .top .left-side h4 {
+  color: #7b5cfa;
+}
+
+body main .invoice-info-section .invoice-personal-details .top .left-side h4 span {
+  color: #000;
+}
+
+body main .invoice-info-section .invoice-personal-details .top .left-side p {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .top .right-side p {
+  display: block;
+  color: #888eb0;
+  font-size: 12px;
+  text-align: right;
+  margin: 3px;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  margin-top: 4rem;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .left-side {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .left-side .date p,
+body main .invoice-info-section .invoice-personal-details .middle .left-side .due p {
+  font-size: 12px;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .left-side .date h4,
+body main .invoice-info-section .invoice-personal-details .middle .left-side .due h4 {
+  margin-top: 10px;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .mid-side p {
+  color: #888eb0;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .mid-side h4 {
+  margin: 15px 0 7px;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .right-side p {
+  color: #888eb0;
+  font-size: 12px;
+}
+
+body main .invoice-info-section .invoice-personal-details .middle .right-side h4 {
+  margin-top: 10px;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 4rem 4rem 1fr;
+      grid-template-columns: 1fr 4rem 4rem 1fr;
+  -ms-grid-rows: 2fr 1fr;
+      grid-template-rows: 2fr 1fr;
+      grid-template-areas: 'name qty price total' 'amount-due amount-due amount-due amount-due';
+  margin-top: 8rem;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-name {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: name;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-name .name {
+  font-weight: 400;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-name p {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 2rem 2rem;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-quantity {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: qty;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-quantity .quantity {
+  font-weight: 400;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-quantity p {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-price {
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+  grid-area: price;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-price .price {
+  font-weight: 400;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-price p {
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-total {
+  -ms-grid-row: 1;
+  -ms-grid-column: 4;
+  grid-area: total;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-total .total {
+  font-weight: 400;
+  color: #888eb0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .item-total p {
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 2rem 2rem 0;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .amount-due {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 4;
+  grid-area: amount-due;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background: #373b53;
+  padding: 2rem;
+  border: 5px;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .amount-due p {
+  color: #fff;
+  font-weight: 700;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .amount-due .due {
+  font-size: 12px;
+}
+
+body main .invoice-info-section .invoice-personal-details .bottom .amount-due .total {
+  font-size: 1.5rem;
 }
 
 body form {

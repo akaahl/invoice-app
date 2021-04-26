@@ -46,7 +46,7 @@
     </aside>
 
     <main id="main-container">
-      <header>
+      <!-- <header>
         <div class="invoice-details">
           <h1>Invoices</h1>
           <p>There are 7 total invoices</p>
@@ -61,15 +61,15 @@
 
             <ul id="filter-content">
               <li>
-                <input type="checkbox" name="paid" class="filter-checkbox"/>
+                <input type="checkbox" name="paid" class="filter-checkbox" />
                 <label for="paid">Paid</label>
               </li>
               <li>
-                <input type="checkbox" name="pending" class="filter-checkbox"/>
+                <input type="checkbox" name="pending" class="filter-checkbox" />
                 <label for="pending">Pending</label>
               </li>
               <li>
-                <input type="checkbox" name="draft" class="filter-checkbox"/>
+                <input type="checkbox" name="draft" class="filter-checkbox" />
                 <label for="draft">Draft</label>
               </li>
             </ul>
@@ -84,7 +84,99 @@
         </div>
       </header>
 
-      <section id="section-element"></section>
+      <section id="section-element"></section> -->
+
+      <div class="invoice-info-section" id="invoice-info-section">
+        <button type="button" class="back-btn">
+          <img src="images/icon-arrow-left.svg" alt="left arrow icon" />
+          <p>Go back</p>
+        </button>
+
+        <div class="invoice-status paid">
+          <p>Status</p>
+          <div class="status">
+            <i class="bx bxs-circle"></i>
+            <p>Paid</p>
+          </div>
+          <button type="button" class="edit-btn">Edit</button>
+          <button type="button" class="delete-btn">Delete</button>
+        </div>
+
+        <div class="invoice-personal-details">
+          <div class="top">
+            <div class="left-side">
+              <h4 class="id">#<span>XM9141</span></h4>
+              <p class="description">Graphic Design</p>
+            </div>
+
+            <div class="right-side">
+              <p>19 Union Terrace</p>
+              <p>London</p>
+              <p>E1 3EZ</p>
+              <p>United Kingdom</p>
+            </div>
+          </div>
+
+          <div class="middle">
+            <div class="left-side">
+              <div class="date">
+                <p>Invoice Date</p>
+                <h4>21 Aug 2021</h4>
+              </div>
+
+              <div class="due">
+                <p>Invoice Due</p>
+                <h4>20 Sep 2021</h4>
+              </div>
+            </div>
+
+            <div class="mid-side">
+              <p>Bill To</p>
+              <h4>Alex Grim</h4>
+              <p>84 Church Way</p>
+              <p>Bradford</p>
+              <p>BD1 9PB</p>
+              <p>United Kingdom</p>
+            </div>
+
+            <div class="right-side">
+              <p>Sent To</p>
+              <h4>alexgrim@gmail.com</h4>
+            </div>
+          </div>
+
+          <div class="bottom">
+            <div class="item-name">
+              <p class="name">Item Name</p>
+              <p>Banner Design</p>
+              <p>Email Design</p>
+            </div>
+
+            <div class="item-quantity">
+              <p class="quantity">QTY:</p>
+              <p>1</p>
+              <p>2</p>
+            </div>
+
+            <div class="item-price">
+              <p class="price">Price</p>
+              <p>$156</p>
+              <p>$200</p>
+            </div>
+
+            <div class="item-total">
+              <p class="total">Total</p>
+              <p>$156</p>
+              <p>$400</p>
+            </div>
+
+            <div class="amount-due">
+              <p class="due">Amount Due</p>
+              <p class="total">$556</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <form class="form-container" id="form-container" autocomplete="nope">
         <div class="inner-container">

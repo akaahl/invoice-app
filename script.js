@@ -182,27 +182,63 @@ async function initialUpdateDOM() {
   dataArray.forEach(createElement);
 }
 
-initialUpdateDOM();
-
-// filterContent.addEventListener('click', e => {
-//   const targetElement = e.target;
-//   let filteredArray;
-//   // console.log(dataArray.filter(item => item.status == 'paid'));
-//   if (targetElement.getAttribute('name') == 'paid' && targetElement.checked) {
-//     filteredArray = dataArray.filter(item => item.status == 'paid');
-//     sectionElement.innerHTML = '';
-//     filteredArray.forEach(createElement);
-//   }
-
-// });
+// initialUpdateDOM();
 
 const checkboxes = document.querySelectorAll('.filter-checkbox');
 checkboxes.forEach(checkbox => {
   checkbox.addEventListener('change', e => {
-    const targetElement = e.target;
-    if (targetElement.checked) {
-      console.log(true);
+    const checkboxArray = [
+      ...document.querySelectorAll('.filter-checkbox:checked'),
+    ];
+    const articles = [...document.querySelectorAll('article')];
+    let checkedAttributeNames = [];
+
+    checkboxArray.forEach(checkbox => {
+      checkedAttributeNames.push(checkbox.getAttribute('name'));
+    });
+
+    function filterPaymentStatus() {
+      let hiddenArticles = [];
+
+      if (!articles || articles.length <= 0) {
+        return;
+      }
+
+      for (let i = 0; i < articles.length; i++) {
+        let article = articles[i];
+
+        if (checkedAttributeNames.length > 0) {
+          let isHidden = true;
+
+          for (let j = 0; j < checkedAttributeNames.length; j++) {
+            let name = checkedAttributeNames[j];
+
+            if (article.classList.contains(name)) {
+              isHidden = false;
+              break;
+            }
+          }
+
+          if (isHidden) {
+            hiddenArticles.push(article);
+          }
+        }
+      }
+
+      for (let l = 0; l < articles.length; l++) {
+        articles[l].style.display = 'flex';
+      }
+
+      if (hiddenArticles.length <= 0) {
+        return;
+      }
+
+      for (let m = 0; m < hiddenArticles.length; m++) {
+        hiddenArticles[m].style.display = 'none';
+      }
     }
+
+    filterPaymentStatus();
   });
 });
 

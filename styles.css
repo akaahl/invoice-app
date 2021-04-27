@@ -308,6 +308,14 @@ body main {
           align-items: center;
 }
 
+body main.show-invoice-details header,
+body main.show-invoice-details section {
+  -webkit-transform: translateX(-30%);
+          transform: translateX(-30%);
+  opacity: 0;
+  visibility: hidden;
+}
+
 body main header {
   width: 60%;
   display: -webkit-box;
@@ -319,6 +327,8 @@ body main header {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 body main header .invoice-details h1 {
@@ -525,6 +535,8 @@ body main section {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 body main section article {
@@ -658,13 +670,24 @@ body main section article .right-side .status p {
 
 body main .invoice-info-section {
   width: 50%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: none;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-transform: translateX(75%);
+          transform: translateX(75%);
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.3s ease-in-out all;
+  transition: 0.3s ease-in-out all;
+}
+
+body main .invoice-info-section.show-invoice-info {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
 }
 
 body main .invoice-info-section .back-btn {
@@ -677,9 +700,15 @@ body main .invoice-info-section .back-btn {
   display: flex;
 }
 
+body main .invoice-info-section .back-btn:hover p {
+  color: #888eb0;
+}
+
 body main .invoice-info-section .back-btn p {
   margin-left: 1.5rem;
   font-size: 12px;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
 }
 
 body main .invoice-info-section .invoice-status {
@@ -863,6 +892,7 @@ body main .invoice-info-section .invoice-personal-details .middle {
   -ms-grid-columns: (1fr)[3];
       grid-template-columns: repeat(3, 1fr);
   margin-top: 4rem;
+  min-height: 125px;
 }
 
 body main .invoice-info-section .invoice-personal-details .middle .left-side {
@@ -1008,7 +1038,7 @@ body main .invoice-info-section .invoice-personal-details .bottom .amount-due {
           justify-content: space-between;
   background: #373b53;
   padding: 2rem;
-  border: 5px;
+  border-radius: 5px;
 }
 
 body main .invoice-info-section .invoice-personal-details .bottom .amount-due p {

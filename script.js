@@ -4,6 +4,7 @@ const addNewInvoiceBtn = document.getElementById('add-new-invoice');
 const filterContainer = document.getElementById('filter-container');
 const filterContent = document.getElementById('filter-content');
 const mainContainer = document.getElementById('main-container');
+const header = document.getElementById('header');
 const sectionElement = document.getElementById('section-element');
 const articleElements = document.querySelectorAll('article');
 const formContainer = document.getElementById('form-container');
@@ -16,6 +17,7 @@ const h4ItemList = document.getElementById('h4-item-list');
 const inputFields = document.querySelectorAll('.fields');
 const saveAsDraftBtn = document.getElementById('draft-btn');
 const sendBtn = document.getElementById('send-btn');
+const invoiceDetails = document.getElementById('invoice-info-section');
 const dataUrl = `data.json`;
 let dataArray, fieldAlert;
 let invoiceInfo = {};
@@ -148,6 +150,7 @@ function formatDate(dateStr) {
 function createElement(item) {
   const articleElement = document.createElement('article');
   articleElement.classList.add(paymentStatus(item.status));
+  articleElement.addEventListener('click', showInvoiceDetails);
 
   formatDate(item.paymentDue);
 
@@ -159,9 +162,11 @@ function createElement(item) {
           </div>
 
           <div class="right-side">
-            <p class="amount">${currencySymbol(item.clientAddress.country)}${
-    item.total == undefined ? 0 : item.total
-  }</p>
+            <p class="amount">${
+              item.total == '0.00'
+                ? ''
+                : currencySymbol(item.clientAddress.country) + item.total
+            }</p>
             <div class="status">
               <i class="bx bxs-circle"></i>
               <p>${
@@ -182,7 +187,172 @@ async function initialUpdateDOM() {
   dataArray.forEach(createElement);
 }
 
-// initialUpdateDOM();
+initialUpdateDOM();
+
+function goBack() {
+  invoiceDetails.classList.remove('show-invoice-info');
+  console.log(true);
+
+  setTimeout(() => {
+    invoiceDetails.style.display = 'none';
+    header.style.display = 'block';
+    sectionElement.style.display = 'block';
+
+    setTimeout(() => {
+      mainContainer.classList.remove('show-invoice-details');
+    }, 200);
+  }, 350);
+}
+
+// Function to show invoice details
+function showInvoiceDetails(e) {
+  const invoiceName = this.children[0].children[2].innerText;
+
+  dataArray.forEach(item => {
+    if (item.clientName == invoiceName) {
+      console.log(item);
+
+      invoiceDetails.innerHTML = `
+        <button type="button" class="back-btn" onclick="goBack()">
+          <img src="images/icon-arrow-left.svg" alt="left arrow icon" />
+          <p>Go back</p>
+        </button>
+
+        <div class="invoice-status ${item.status}">
+          <p>Status</p>
+          <div class="status">
+            <i class="bx bxs-circle"></i>
+            <p>${
+              item.status.slice(0, 1).toUpperCase() + item.status.slice(1)
+            }</p>
+          </div>
+          <button type="button" class="edit-btn">Edit</button>
+          <button type="button" class="delete-btn">Delete</button>
+        </div>
+
+        <div class="invoice-personal-details">
+          <div class="top">
+            <div class="left-side">
+              <h4 class="id">#<span>${item.id}</span></h4>
+              <p class="description">${item.description}</p>
+            </div>
+
+            <div class="right-side">
+              <p>${item.senderAddress.street}</p>
+              <p>${item.senderAddress.city}</p>
+              <p>${item.senderAddress.postCode}</p>
+              <p>${item.senderAddress.country}</p>
+            </div>
+          </div>
+
+          <div class="middle">
+            <div class="left-side">
+              <div class="date">
+                <p>Invoice Date</p>
+                <h4>${formatDate(item.createdAt)}</h4>
+              </div>
+
+              <div class="due">
+                <p>Invoice Due</p>
+                <h4>${formatDate(item.paymentDue)}</h4>
+              </div>
+            </div>
+
+            <div class="mid-side">
+              <p>Bill To</p>
+              <h4>${item.clientName}</h4>
+              <p>${item.clientAddress.street}</p>
+              <p>${item.clientAddress.city}</p>
+              <p>${item.clientAddress.postCode}</p>
+              <p>${item.clientAddress.country}</p>
+            </div>
+
+            <div class="right-side">
+              <p>Sent To</p>
+              <h4>${item.clientEmail}</h4>
+            </div>
+          </div>
+
+          <div class="bottom">
+            <div class="item-name" id="item-name">
+              <p class="name">Item Name</p>
+              
+            </div>
+
+            <div class="item-quantity" id="item-quantity">
+              <p class="quantity">QTY:</p>
+            </div>
+
+            <div class="item-price" id="item-price">
+              <p class="price">Price</p>
+            </div>
+
+            <div class="item-total" id="item-total">
+              <p class="total">Total</p>
+            </div>
+
+            <div class="amount-due">
+              <p class="due">Amount Due</p>
+              <p class="total">${
+                item.total == '0.00'
+                  ? ''
+                  : currencySymbol(item.clientAddress.country) + item.total
+              }</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const itemName = document.getElementById('item-name');
+      const itemQuantity = document.getElementById('item-quantity');
+      const itemPrice = document.getElementById('item-price');
+      const itemTotal = document.getElementById('item-total');
+
+      const itemList = [...item.items];
+      itemList.forEach(list => {
+        const nameElement = document.createElement('p');
+        nameElement.textContent = list.name;
+        itemName.appendChild(nameElement);
+
+        const quantityElement = document.createElement('p');
+        quantityElement.textContent = list.quantity;
+        itemQuantity.appendChild(quantityElement);
+
+        const priceElement = document.createElement('p');
+        priceElement.innerHTML = `${currencySymbol(
+          item.clientAddress.country
+        )}${list.price}`;
+        itemPrice.appendChild(priceElement);
+
+        const totalElement = document.createElement('p');
+        totalElement.innerHTML = `${currencySymbol(
+          item.clientAddress.country
+        )}${list.total}`;
+        itemTotal.appendChild(totalElement);
+      });
+    }
+  });
+
+  // if (item.items.length > 0) {
+  //   const paragraphElement = document.createElement('p');
+  //   paragraphElement.textContent = item.items.name;
+
+  //   console.log(itemName);
+  // }
+
+  // dataArray.for;
+
+  mainContainer.classList.add('show-invoice-details');
+  setTimeout(() => {
+    sectionElement.style.display = 'none';
+    header.style.display = 'none';
+    invoiceDetails.style.display = 'flex';
+
+    setTimeout(() => {
+      invoiceDetails.classList.add('show-invoice-info');
+    }, 200);
+  }, 350);
+}
 
 const checkboxes = document.querySelectorAll('.filter-checkbox');
 checkboxes.forEach(checkbox => {

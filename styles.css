@@ -92,6 +92,79 @@ body[data-theme='dark'] main section article .right-side .amount {
   color: #fff;
 }
 
+body[data-theme='dark'] main .invoice-info-section .back-btn p {
+  color: #fff;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-status {
+  background: #1e2139;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-status p {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-status .edit-btn {
+  background: #252945;
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-status .edit-btn:hover {
+  color: #7b5cfa;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details {
+  background: #1e2139;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .top .left-side h4 span {
+  color: #fff;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .top .left-side p {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .top .right-side p {
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .middle h4 {
+  color: #fff;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .middle p {
+  color: #dfe3fa !important;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom {
+  background: #252945;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .item-name p,
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .item-quantity p,
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .item-price p,
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .item-total p {
+  font-weight: 700;
+  color: #fff;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .name,
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .price,
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .quantity,
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .total {
+  color: #dfe3fa !important;
+  font-weight: 500 !important;
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .amount-due {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+body[data-theme='dark'] main .invoice-info-section .invoice-personal-details .bottom .amount-due p {
+  color: #fff;
+}
+
 body[data-theme='dark'] main form .inner-container {
   background: #141625;
 }
@@ -721,11 +794,11 @@ body main .invoice-info-section .invoice-status {
   padding: 1.5rem;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 1fr 6rem;
-      grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 1fr 6rem;
+  -ms-grid-columns: 3.5rem 8rem 1fr 1fr 1fr 6rem 8rem;
+      grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 6rem 8rem;
   -ms-flex-line-pack: center;
       align-content: center;
-      grid-template-areas: 'status status-info . . . . edit delete';
+      grid-template-areas: 'status status-info . .  edit delete mark-as-paid';
 }
 
 body main .invoice-info-section .invoice-status.pending .status {
@@ -740,6 +813,11 @@ body main .invoice-info-section .invoice-status.pending .status p {
   color: orange;
 }
 
+body main .invoice-info-section .invoice-status.paid {
+  -ms-grid-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 6rem;
+      grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 6rem;
+}
+
 body main .invoice-info-section .invoice-status.paid .status {
   background: rgba(51, 214, 159, 0.05);
 }
@@ -750,6 +828,22 @@ body main .invoice-info-section .invoice-status.paid .status i {
 
 body main .invoice-info-section .invoice-status.paid .status p {
   color: #33d69f;
+}
+
+body main .invoice-info-section .invoice-status.paid .edit-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+  grid-area: delete;
+}
+
+body main .invoice-info-section .invoice-status.paid .delete-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 7;
+  grid-area: mark-as-paid;
+}
+
+body main .invoice-info-section .invoice-status.paid .mark-as-paid {
+  display: none;
 }
 
 body main .invoice-info-section .invoice-status.draft .status {
@@ -810,19 +904,19 @@ body main .invoice-info-section .invoice-status .status p {
 
 body main .invoice-info-section .invoice-status .edit-btn {
   -ms-grid-row: 1;
-  -ms-grid-column: 7;
+  -ms-grid-column: 5;
   grid-area: edit;
   background: none;
   border: none;
   font-weight: 700;
   color: #7b5cfa;
   border-radius: 2rem;
-  margin-right: 1rem;
+  margin-right: 10px;
   padding: 1rem 1.5rem;
   font-size: 12px;
   cursor: pointer;
-  -webkit-transition: 0.3s ease-in all;
-  transition: 0.3s ease-in all;
+  -webkit-transition: 0.2s ease-in all;
+  transition: 0.2s ease-in all;
 }
 
 body main .invoice-info-section .invoice-status .edit-btn:hover {
@@ -836,16 +930,36 @@ body main .invoice-info-section .invoice-status .delete-btn {
   background: #ec5757;
   border: none;
   border-radius: 2rem;
+  margin-right: 10px;
   cursor: pointer;
   color: #fff;
   font-weight: 700;
-  -webkit-transition: 0.3s ease-in all;
-  transition: 0.3s ease-in all;
+  -webkit-transition: 0.2s ease-in all;
+  transition: 0.2s ease-in all;
   font-size: 12px;
 }
 
 body main .invoice-info-section .invoice-status .delete-btn:hover {
   background: rgba(236, 87, 87, 0.7);
+}
+
+body main .invoice-info-section .invoice-status .mark-as-paid {
+  -ms-grid-row: 1;
+  -ms-grid-column: 7;
+  grid-area: mark-as-paid;
+  background: #7b5cfa;
+  border: none;
+  border-radius: 2rem;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease-in all;
+  transition: 0.2s ease-in all;
+}
+
+body main .invoice-info-section .invoice-status .mark-as-paid:hover {
+  background: rgba(123, 92, 250, 0.8);
 }
 
 body main .invoice-info-section .invoice-personal-details {
@@ -943,10 +1057,10 @@ body main .invoice-info-section .invoice-personal-details .bottom {
   display: grid;
   -ms-grid-columns: 1fr 4rem 4rem 1fr;
       grid-template-columns: 1fr 4rem 4rem 1fr;
-  -ms-grid-rows: 2fr 1fr;
-      grid-template-rows: 2fr 1fr;
       grid-template-areas: 'name qty price total' 'amount-due amount-due amount-due amount-due';
   margin-top: 8rem;
+  padding-top: 2.5rem;
+  border-radius: 5px;
 }
 
 body main .invoice-info-section .invoice-personal-details .bottom .item-name {
@@ -1038,7 +1152,8 @@ body main .invoice-info-section .invoice-personal-details .bottom .amount-due {
           justify-content: space-between;
   background: #373b53;
   padding: 2rem;
-  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 body main .invoice-info-section .invoice-personal-details .bottom .amount-due p {
@@ -1052,6 +1167,7 @@ body main .invoice-info-section .invoice-personal-details .bottom .amount-due .d
 
 body main .invoice-info-section .invoice-personal-details .bottom .amount-due .total {
   font-size: 1.5rem;
+  font-weight: 700 !important;
 }
 
 body form {

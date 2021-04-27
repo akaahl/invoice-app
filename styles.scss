@@ -130,6 +130,95 @@ body {
         }
       }
 
+      .invoice-info-section {
+        .back-btn {
+          p {
+            color: $white;
+          }
+        }
+
+        .invoice-status {
+          background: $dark-article-bg;
+
+          p {
+            color: $pale-blue;
+          }
+
+          .edit-btn {
+            background: $button-dark-bg;
+            color: $pale-blue;
+
+            &:hover {
+              color: $violet;
+            }
+          }
+        }
+
+        .invoice-personal-details {
+          background: $dark-article-bg;
+
+          .top {
+            .left-side {
+              h4 {
+                span {
+                  color: $white;
+                }
+              }
+
+              p {
+                color: $pale-blue;
+              }
+            }
+
+            .right-side {
+              p {
+                color: $pale-blue;
+              }
+            }
+          }
+
+          .middle {
+            h4 {
+              color: $white;
+            }
+
+            p {
+              color: $pale-blue !important;
+            }
+          }
+
+          .bottom {
+            background: $button-dark-bg;
+
+            .item-name,
+            .item-quantity,
+            .item-price,
+            .item-total {
+              p {
+                font-weight: 700;
+                color: $white;
+              }
+            }
+
+            .name,
+            .price,
+            .quantity,
+            .total {
+              color: $pale-blue !important;
+              font-weight: 500 !important;
+            }
+
+            .amount-due {
+              background: rgba($black, 0.6);
+
+              p {
+                color: $white;
+              }
+            }
+          }
+        }
+      }
+
       form {
         .inner-container {
           background: $dark-bg;
@@ -651,9 +740,9 @@ body {
         box-shadow: 2px 4px 7px rgba($black, 0.05);
         padding: 1.5rem;
         display: grid;
-        grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 1fr 6rem;
+        grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 6rem 8rem;
         align-content: center;
-        grid-template-areas: 'status status-info . . . . edit delete';
+        grid-template-areas: 'status status-info . .  edit delete mark-as-paid';
 
         &.pending {
           .status {
@@ -670,6 +759,8 @@ body {
         }
 
         &.paid {
+          grid-template-columns: 3.5rem 8rem 1fr 1fr 1fr 1fr 6rem;
+
           .status {
             background: rgba($green, 0.05);
 
@@ -680,6 +771,18 @@ body {
             p {
               color: $green;
             }
+          }
+
+          .edit-btn {
+            grid-area: delete;
+          }
+
+          .delete-btn {
+            grid-area: mark-as-paid;
+          }
+
+          .mark-as-paid {
+            display: none;
           }
         }
 
@@ -735,11 +838,11 @@ body {
           font-weight: 700;
           color: $violet;
           border-radius: 2rem;
-          margin-right: 1rem;
+          margin-right: 10px;
           padding: 1rem 1.5rem;
           font-size: 12px;
           cursor: pointer;
-          transition: 0.3s ease-in all;
+          transition: 0.2s ease-in all;
 
           &:hover {
             background: $pale-blue;
@@ -751,14 +854,31 @@ body {
           background: $pale-red;
           border: none;
           border-radius: 2rem;
+          margin-right: 10px;
           cursor: pointer;
           color: $white;
           font-weight: 700;
-          transition: 0.3s ease-in all;
+          transition: 0.2s ease-in all;
           font-size: 12px;
 
           &:hover {
             background: rgba($pale-red, 0.7);
+          }
+        }
+
+        .mark-as-paid {
+          grid-area: mark-as-paid;
+          background: $violet;
+          border: none;
+          border-radius: 2rem;
+          font-size: 12px;
+          font-weight: 700;
+          color: $white;
+          cursor: pointer;
+          transition: 0.2s ease-in all;
+
+          &:hover {
+            background: rgba($violet, 0.8);
           }
         }
       }
@@ -851,11 +971,20 @@ body {
         .bottom {
           display: grid;
           grid-template-columns: 1fr 4rem 4rem 1fr;
-          grid-template-rows: 2fr 1fr;
+          // grid-template-rows: 2fr 1fr;
           grid-template-areas:
             'name qty price total'
             'amount-due amount-due amount-due amount-due';
           margin-top: 8rem;
+          padding-top: 2.5rem;
+          border-radius: 5px;
+
+          // .name,
+          // .quantity,
+          // .price,
+          // .total {
+          //   margin-top: 3rem !important;
+          // }
 
           .item-name {
             grid-area: name;
@@ -929,7 +1058,8 @@ body {
             justify-content: space-between;
             background: $dark-grayish-blue;
             padding: 2rem;
-            border-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
 
             p {
               color: $white;
@@ -942,6 +1072,7 @@ body {
 
             .total {
               font-size: 1.5rem;
+              font-weight: 700 !important;
             }
           }
         }

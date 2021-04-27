@@ -195,8 +195,8 @@ function goBack() {
 
   setTimeout(() => {
     invoiceDetails.style.display = 'none';
-    header.style.display = 'block';
-    sectionElement.style.display = 'block';
+    header.style.display = 'flex';
+    sectionElement.style.display = 'flex';
 
     setTimeout(() => {
       mainContainer.classList.remove('show-invoice-details');
@@ -228,6 +228,7 @@ function showInvoiceDetails(e) {
           </div>
           <button type="button" class="edit-btn">Edit</button>
           <button type="button" class="delete-btn">Delete</button>
+          <button type="button" class="mark-as-paid">Mark As Paid</button>
         </div>
 
         <div class="invoice-personal-details">

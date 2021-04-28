@@ -27,6 +27,42 @@ body.form-show form .inner-container {
   left: 0%;
 }
 
+body.edit-form {
+  overflow: hidden;
+}
+
+body.edit-form form {
+  visibility: visible;
+  opacity: 1;
+}
+
+body.edit-form form .inner-container {
+  left: 0%;
+}
+
+body.edit-form form .inner-container .button-selections .discard-btn,
+body.edit-form form .inner-container .button-selections .draft-btn,
+body.edit-form form .inner-container .button-selections .send-btn {
+  display: none;
+}
+
+body.edit-form form .inner-container .button-selections .cancel-btn,
+body.edit-form form .inner-container .button-selections .save-changes-btn {
+  display: block;
+}
+
+body.edit-form form .inner-container .button-selections .cancel-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+  grid-area: draft;
+}
+
+body.edit-form form .inner-container .button-selections .save-changes-btn {
+  -ms-grid-row: 1;
+  -ms-grid-column: 6;
+  grid-area: send;
+}
+
 body[data-theme='dark'] {
   background: #141625;
 }
@@ -258,6 +294,16 @@ body[data-theme='dark'] main form .inner-container .button-selections .discard-b
 
 body[data-theme='dark'] main form .inner-container .button-selections .discard-btn:hover {
   background: #fff;
+}
+
+body[data-theme='dark'] main form .inner-container .button-selections .cancel-btn {
+  background: #252945;
+  color: #dfe3fa;
+}
+
+body[data-theme='dark'] main form .inner-container .button-selections .cancel-btn:hover {
+  background: #fff;
+  color: #252945;
 }
 
 body aside {
@@ -1636,6 +1682,43 @@ body form .inner-container .button-selections .send-btn {
 }
 
 body form .inner-container .button-selections .send-btn:hover {
+  background: rgba(123, 92, 250, 0.8);
+}
+
+body form .inner-container .button-selections .cancel-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-weight: 700;
+  color: #7b5cfa;
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 12px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+body form .inner-container .button-selections .cancel-btn:hover {
+  background: #dfe3fa;
+}
+
+body form .inner-container .button-selections .save-changes-btn {
+  display: none;
+  background: #7b5cfa;
+  color: #fff;
+  font-weight: 700;
+  padding: 1rem;
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  width: 8rem;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+body form .inner-container .button-selections .save-changes-btn:hover {
   background: rgba(123, 92, 250, 0.8);
 }
 /*# sourceMappingURL=styles.css.map */

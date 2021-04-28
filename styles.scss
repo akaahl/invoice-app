@@ -39,6 +39,40 @@ body {
     }
   }
 
+  &.edit-form {
+    overflow: hidden;
+
+    form {
+      visibility: visible;
+      opacity: 1;
+
+      .inner-container {
+        left: 0%;
+
+        .button-selections {
+          .discard-btn,
+          .draft-btn,
+          .send-btn {
+            display: none;
+          }
+
+          .cancel-btn,
+          .save-changes-btn {
+            display: block;
+          }
+
+          .cancel-btn {
+            grid-area: draft;
+          }
+
+          .save-changes-btn {
+            grid-area: send;
+          }
+        }
+      }
+    }
+  }
+
   &[data-theme='dark'] {
     background: $dark-bg;
 
@@ -287,6 +321,16 @@ body {
 
               &:hover {
                 background: $white;
+              }
+            }
+
+            .cancel-btn {
+              background: $button-dark-bg;
+              color: $pale-blue;
+
+              &:hover {
+                background: $white;
+                color: $button-dark-bg;
               }
             }
           }
@@ -1449,6 +1493,41 @@ body {
           color: $white;
           cursor: pointer;
           transition: all 0.2s ease-in;
+
+          &:hover {
+            background: rgba($violet, 0.8);
+          }
+        }
+
+        .cancel-btn {
+          display: none;
+          background: none;
+          border: none;
+          font-weight: 700;
+          color: $violet;
+          cursor: pointer;
+          padding: 1rem 1.5rem;
+          border-radius: 2rem;
+          font-size: 12px;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            background: $pale-blue;
+          }
+        }
+
+        .save-changes-btn {
+          display: none;
+          background: $violet;
+          color: $white;
+          font-weight: 700;
+          padding: 1rem;
+          border-radius: 2rem;
+          border: none;
+          cursor: pointer;
+          font-size: 12px;
+          width: 8rem;
+          transition: all 0.3s ease-in-out;
 
           &:hover {
             background: rgba($violet, 0.8);

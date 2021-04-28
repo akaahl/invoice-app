@@ -10,6 +10,7 @@ const articleElements = document.querySelectorAll('article');
 const formContainer = document.getElementById('form-container');
 const invoiceDate = document.getElementById('invoice-date');
 const discardBtn = document.getElementById('discard-btn');
+const cancelBtn = document.getElementById('cancel-btn');
 const formContent = document.getElementById('form-content');
 const addNewItem = document.getElementById('add-new-item');
 const itemListContainer = document.getElementById('item-list');
@@ -52,12 +53,17 @@ setColorMode();
 // Show form modal
 addNewInvoiceBtn.addEventListener('click', () => {
   body.classList.add('form-show');
+  resetInputFields();
 });
 
 // Remove form modal
 discardBtn.addEventListener('click', () => {
   body.classList.remove('form-show');
   resetInputFields();
+});
+
+cancelBtn.addEventListener('click', () => {
+  body.classList.remove('edit-form');
 });
 
 // Format datepicker based on today's date (form modal)
@@ -70,7 +76,17 @@ formatInvoiceDate();
 
 // Click anywhere other than the inner form will trigger close form modal
 formContainer.addEventListener('click', e => {
-  if (e.target.matches('.form-container')) {
+  if (
+    e.target.matches('.form-container') &&
+    body.classList.contains('edit-form')
+  ) {
+    body.classList.remove('edit-form');
+  }
+
+  if (
+    e.target.matches('.form-container') &&
+    body.classList.contains('form-show')
+  ) {
     body.classList.remove('form-show');
     resetInputFields();
   }
@@ -189,9 +205,9 @@ async function initialUpdateDOM() {
 
 initialUpdateDOM();
 
+// Self explanatory
 function goBack() {
   invoiceDetails.classList.remove('show-invoice-info');
-  console.log(true);
 
   setTimeout(() => {
     invoiceDetails.style.display = 'none';
@@ -204,13 +220,54 @@ function goBack() {
   }, 350);
 }
 
+// Allow edit functionality on invoice details
+function editInvoice() {
+  body.classList.add('edit-form');
+}
+
+// Function to mark as paid
+function markAsPaid() {
+  item.status = 'paid';
+}
+
 // Function to show invoice details
 function showInvoiceDetails(e) {
   const invoiceName = this.children[0].children[2].innerText;
 
   dataArray.forEach(item => {
     if (item.clientName == invoiceName) {
-      console.log(item);
+      function selectIndex(num) {
+        return num == 1 ? 0 : num == 7 ? 1 : num == 14 ? 2 : 3;
+      }
+
+      document.querySelector('.sender-street').value =
+        item.senderAddress.street;
+      document.querySelector('.sender-city').value = item.senderAddress.city;
+      document.querySelector('.sender-post-code').value =
+        item.senderAddress.postCode;
+      document.querySelector('.sender-country').value =
+        item.senderAddress.country;
+      document.querySelector('.client-name').value = item.clientName;
+      document.querySelector('.client-email').value = item.clientEmail;
+      document.querySelector('.client-street').value =
+        item.clientAddress.street;
+      document.querySelector('.client-city').value = item.clientAddress.city;
+      document.querySelector('.client-post-code').value =
+        item.clientAddress.postCode;
+      document.querySelector('.client-country').value =
+        item.clientAddress.country;
+      document.querySelector('.created-at').value = item.createdAt;
+      document.querySelector('.payment-terms').selectedIndex = selectIndex(
+        item.paymentTerms
+      );
+      document.querySelector('.client-description').value = item.description;
+
+      // Delete all item elements first
+      const items = document.querySelectorAll('.item');
+      items.forEach(item => item.remove());
+
+      // Then add new items based on the item array length
+      item.items.forEach(addListItem);
 
       invoiceDetails.innerHTML = `
         <button type="button" class="back-btn" onclick="goBack()">
@@ -226,9 +283,9 @@ function showInvoiceDetails(e) {
               item.status.slice(0, 1).toUpperCase() + item.status.slice(1)
             }</p>
           </div>
-          <button type="button" class="edit-btn">Edit</button>
+          <button type="button" class="edit-btn" onclick="editInvoice()">Edit</button>
           <button type="button" class="delete-btn">Delete</button>
-          <button type="button" class="mark-as-paid">Mark As Paid</button>
+          <button type="button" class="mark-as-paid" onclick="markAsPaid()">Mark As Paid</button>
         </div>
 
         <div class="invoice-personal-details">
@@ -310,6 +367,7 @@ function showInvoiceDetails(e) {
       const itemTotal = document.getElementById('item-total');
 
       const itemList = [...item.items];
+
       itemList.forEach(list => {
         const nameElement = document.createElement('p');
         nameElement.textContent = list.name;
@@ -330,18 +388,36 @@ function showInvoiceDetails(e) {
           item.clientAddress.country
         )}${list.total}`;
         itemTotal.appendChild(totalElement);
+
+        console.log(list.name);
       });
+
+      function assignItemValues(arr1, arr2) {
+        for (let i = 0; i < arr1.length; i++) {
+          if (arr1[i].classList.contains('total-of-item')) {
+            arr1[i].innerText = arr2[i].toFixed(2);
+          }
+
+          arr1[i].value = arr2[i];
+        }
+      }
+
+      let nameArray = itemList.map(list => list.name);
+      let quantityArray = itemList.map(list => list.quantity);
+      let priceArray = itemList.map(list => list.price);
+      let totalArray = itemList.map(list => list.total);
+      const nameOfItem = document.querySelectorAll('.name-of-item');
+      const quantityOfItem = document.querySelectorAll('.quantity-of-item');
+      const priceOfItem = document.querySelectorAll('.price-of-item');
+      const totalOfItem = document.querySelectorAll('.total-of-item');
+
+      assignItemValues(nameOfItem, nameArray);
+      assignItemValues(quantityOfItem, quantityArray);
+      assignItemValues(priceOfItem, priceArray);
+      assignItemValues(totalOfItem, totalArray);
+      console.log(totalOfItem);
     }
   });
-
-  // if (item.items.length > 0) {
-  //   const paragraphElement = document.createElement('p');
-  //   paragraphElement.textContent = item.items.name;
-
-  //   console.log(itemName);
-  // }
-
-  // dataArray.for;
 
   mainContainer.classList.add('show-invoice-details');
   setTimeout(() => {
@@ -454,8 +530,8 @@ formContent.addEventListener('focusout', e => {
   }
 });
 
-// Add new item within the form
-addNewItem.addEventListener('click', () => {
+// Add item list function
+function addListItem() {
   const itemElement = document.createElement('div');
   itemElement.classList.add('item');
 
@@ -466,7 +542,7 @@ addNewItem.addEventListener('click', () => {
         type="text"
         name="name-of-item"
         autocomplete="nope"
-        class="fields item-name"
+        class="fields name-of-item"
       />
     </div>
 
@@ -476,7 +552,7 @@ addNewItem.addEventListener('click', () => {
         type="text"
         name="quantity-of-item"
         autocomplete="nope"
-        class="fields item-quantity"
+        class="fields quantity-of-item"
       />
     </div>
 
@@ -486,13 +562,13 @@ addNewItem.addEventListener('click', () => {
         type="text"
         name="price-of-item"
         autocomplete="nope"
-        class="fields item-price"
+        class="fields price-of-item"
         >
     </div>
 
     <div class="total">
       <label for="item-total">Total</label>
-      <p class="item-total">0</p>
+      <p class="total-of-item">0</p>
     </div>
 
     <img
@@ -528,7 +604,10 @@ addNewItem.addEventListener('click', () => {
     }
   });
   addNewItem.insertAdjacentElement('beforebegin', itemElement);
-});
+}
+
+// Event listener for add new item
+addNewItem.addEventListener('click', addListItem);
 
 // Prevent from adding new item when pressing Enter
 addNewItem.addEventListener('keydown', e => {

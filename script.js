@@ -18,9 +18,10 @@ const h4ItemList = document.getElementById('h4-item-list');
 const inputFields = document.querySelectorAll('.fields');
 const saveAsDraftBtn = document.getElementById('draft-btn');
 const sendBtn = document.getElementById('send-btn');
+const saveChangesBtn = document.getElementById('save-changes-btn');
 const invoiceDetails = document.getElementById('invoice-info-section');
 const dataUrl = `data.json`;
-let dataArray, fieldAlert;
+let dataArray, fieldAlert, invoiceName;
 let invoiceInfo = {};
 
 // Reset input fields in modal
@@ -166,6 +167,7 @@ function formatDate(dateStr) {
 function createElement(item) {
   const articleElement = document.createElement('article');
   articleElement.classList.add(paymentStatus(item.status));
+  articleElement.classList.add('article-element');
   articleElement.addEventListener('click', showInvoiceDetails);
 
   formatDate(item.paymentDue);
@@ -208,6 +210,7 @@ initialUpdateDOM();
 // Self explanatory
 function goBack() {
   invoiceDetails.classList.remove('show-invoice-info');
+  // invoiceName = undefined;
 
   setTimeout(() => {
     invoiceDetails.style.display = 'none';
@@ -226,13 +229,30 @@ function editInvoice() {
 }
 
 // Function to mark as paid
-function markAsPaid() {
-  item.status = 'paid';
+function markAsPaid(arg) {
+  const parentElement = arg.parentElement;
+  parentElement.classList = `invoice-status paid`;
+
+  const previousElement = (arg.previousElementSibling.previousElementSibling.previousElementSibling.children[1].innerText =
+    'Paid');
+
+  const itemId =
+    arg.parentElement.nextElementSibling.children[0].children[0].children[0]
+      .children[0].innerText;
+
+  let itemIndex = dataArray.findIndex(item => item.id == itemId);
+  dataArray[itemIndex].status = 'paid';
+
+  sectionElement.innerHTML = '';
+  dataArray.forEach(createElement);
 }
 
 // Function to show invoice details
 function showInvoiceDetails(e) {
-  const invoiceName = this.children[0].children[2].innerText;
+  if (e.target.classList.contains('article-element')) {
+    invoiceName = this.children[0].children[2].innerText;
+  }
+  console.log(invoiceName);
 
   dataArray.forEach(item => {
     if (item.clientName == invoiceName) {
@@ -240,6 +260,7 @@ function showInvoiceDetails(e) {
         return num == 1 ? 0 : num == 7 ? 1 : num == 14 ? 2 : 3;
       }
 
+      // Populate form based on dataArray
       document.querySelector('.sender-street').value =
         item.senderAddress.street;
       document.querySelector('.sender-city').value = item.senderAddress.city;
@@ -269,6 +290,8 @@ function showInvoiceDetails(e) {
       // Then add new items based on the item array length
       item.items.forEach(addListItem);
 
+      console.log(item.clientName);
+
       invoiceDetails.innerHTML = `
         <button type="button" class="back-btn" onclick="goBack()">
           <img src="images/icon-arrow-left.svg" alt="left arrow icon" />
@@ -285,7 +308,7 @@ function showInvoiceDetails(e) {
           </div>
           <button type="button" class="edit-btn" onclick="editInvoice()">Edit</button>
           <button type="button" class="delete-btn">Delete</button>
-          <button type="button" class="mark-as-paid" onclick="markAsPaid()">Mark As Paid</button>
+          <button type="button" class="mark-as-paid" onclick="markAsPaid(this)">Mark As Paid</button>
         </div>
 
         <div class="invoice-personal-details">
@@ -361,6 +384,7 @@ function showInvoiceDetails(e) {
         </div>
       `;
 
+      // Update the invoiceDetails item section
       const itemName = document.getElementById('item-name');
       const itemQuantity = document.getElementById('item-quantity');
       const itemPrice = document.getElementById('item-price');
@@ -388,10 +412,9 @@ function showInvoiceDetails(e) {
           item.clientAddress.country
         )}${list.total}`;
         itemTotal.appendChild(totalElement);
-
-        console.log(list.name);
       });
 
+      // Function to populate list of items value based on items array length
       function assignItemValues(arr1, arr2) {
         for (let i = 0; i < arr1.length; i++) {
           if (arr1[i].classList.contains('total-of-item')) {
@@ -415,7 +438,6 @@ function showInvoiceDetails(e) {
       assignItemValues(quantityOfItem, quantityArray);
       assignItemValues(priceOfItem, priceArray);
       assignItemValues(totalOfItem, totalArray);
-      console.log(totalOfItem);
     }
   });
 
@@ -431,6 +453,7 @@ function showInvoiceDetails(e) {
   }, 350);
 }
 
+// Allow dynamic filter functionality based on payment status
 const checkboxes = document.querySelectorAll('.filter-checkbox');
 checkboxes.forEach(checkbox => {
   checkbox.addEventListener('change', e => {
@@ -620,6 +643,20 @@ formContainer.addEventListener('submit', e => {
   e.preventDefault();
 });
 
+// Function to generate paymentDue
+function generatePayDue(dateString, paymentTerm) {
+  let dateArray = dateString.split('-');
+  let currentDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
+  currentDate.setDate(currentDate.getDate() + paymentTerm);
+
+  const year = currentDate.getFullYear() + '';
+  const month = currentDate.getMonth() + 1 + '';
+  const date = currentDate.getDate() + '';
+  const output = `${year}-${month < 10 ? '0' + month : month}-${date}`;
+
+  return output;
+}
+
 // Function to save form
 function saveFormInfo() {
   const alphabets = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
@@ -658,19 +695,6 @@ function saveFormInfo() {
   invoiceInfo.paymentTerms = +document
     .querySelector('.payment-terms')
     .value.split('-')[1];
-
-  function generatePayDue(dateString, paymentTerm) {
-    let dateArray = dateString.split('-');
-    let currentDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
-    currentDate.setDate(currentDate.getDate() + paymentTerm);
-
-    const year = currentDate.getFullYear() + '';
-    const month = currentDate.getMonth() + 1 + '';
-    const date = currentDate.getDate() + '';
-    const output = `${year}-${month < 10 ? '0' + month : month}-${date}`;
-
-    return output;
-  }
 
   const paymentDue = generatePayDue(
     invoiceInfo.createdAt,
@@ -723,6 +747,16 @@ saveAsDraftBtn.addEventListener('click', e => {
   resetInputFields();
 });
 
+// Function to update elements in DOM if fieldAlert is false and reset input fields
+function update(alert) {
+  if (!alert && document.querySelector('.item')) {
+    // If all fields are filled and validated, then save the form info and update into DOM
+    invoiceInfo.status = 'paid';
+    updateElements();
+    resetInputFields();
+  }
+}
+
 // To be used in sendBtn click event
 function updateFormAlert(alert) {
   const fieldEmptyElement = document.getElementById('field-alert');
@@ -744,17 +778,9 @@ function updateFormAlert(alert) {
   if (document.querySelector('.item')) {
     itemListContainer.classList.remove('item-empty-alert');
   }
-
-  if (!alert && document.querySelector('.item')) {
-    // If all fields are filled and validated, then save the form info and update into DOM
-    invoiceInfo.status = 'paid';
-    updateElements();
-    resetInputFields();
-  }
 }
 
-// Perform validation if form is not complete and item is not added
-sendBtn.addEventListener('click', () => {
+function validateFields() {
   // Get all input fields including dynamically added fields
   const allFields = document.querySelectorAll('.fields');
 
@@ -783,4 +809,98 @@ sendBtn.addEventListener('click', () => {
       fieldAlert = false;
     }
   });
+}
+
+// Perform validation if form is not complete and item is not added
+sendBtn.addEventListener('click', e => {
+  validateFields();
+  update(fieldAlert);
+});
+
+saveChangesBtn.addEventListener('click', e => {
+  validateFields();
+  let itemNameIndex = dataArray.findIndex(
+    item => item.clientName == invoiceName
+  );
+
+  console.log(dataArray);
+  console.log(itemNameIndex);
+
+  dataArray[itemNameIndex].senderAddress.street = document.querySelector(
+    '.sender-street'
+  ).value;
+  dataArray[itemNameIndex].senderAddress.city = document.querySelector(
+    '.sender-city'
+  ).value;
+  dataArray[itemNameIndex].senderAddress.postCode = document.querySelector(
+    '.sender-post-code'
+  ).value;
+  dataArray[itemNameIndex].senderAddress.country = document.querySelector(
+    '.sender-country'
+  ).value;
+
+  dataArray[itemNameIndex].clientName = document.querySelector(
+    '.client-name'
+  ).value;
+  dataArray[itemNameIndex].clientEmail = document.querySelector(
+    '.client-email'
+  ).value;
+  dataArray[itemNameIndex].clientAddress.street = document.querySelector(
+    '.client-street'
+  ).value;
+  dataArray[itemNameIndex].clientAddress.city = document.querySelector(
+    '.client-city'
+  ).value;
+  dataArray[itemNameIndex].clientAddress.postCode = document.querySelector(
+    '.client-post-code'
+  ).value;
+  dataArray[itemNameIndex].clientAddress.country = document.querySelector(
+    '.client-country'
+  ).value;
+
+  dataArray[itemNameIndex].createdAt = document.querySelector(
+    '.created-at'
+  ).value;
+  dataArray[itemNameIndex].paymentTerms = +document
+    .querySelector('.payment-terms')
+    .value.split('-')[1];
+  dataArray[itemNameIndex].description = document.querySelector(
+    '.client-description'
+  ).value;
+  dataArray[itemNameIndex].paymentDue = generatePayDue(
+    dataArray[itemNameIndex].createdAt,
+    dataArray[itemNameIndex].paymentTerms
+  );
+  console.log(dataArray[itemNameIndex].items.total);
+
+  dataArray[itemNameIndex].items = [];
+
+  const listItemArray = document.querySelectorAll('.item');
+
+  if (listItemArray) {
+    let itemObject = {};
+
+    listItemArray.forEach(item => {
+      itemObject = {
+        name: item.children[0].children[1].value,
+        price: item.children[2].children[1].value,
+        quantity: item.children[1].children[1].value,
+        total: +item.children[3].children[1].innerText,
+      };
+
+      dataArray[itemNameIndex].items.push(itemObject);
+    });
+
+    dataArray[itemNameIndex].total = dataArray[itemNameIndex].items
+      .reduce((acc, item) => acc + item.total, 0)
+      .toFixed(2);
+  }
+
+  sectionElement.innerHTML = '';
+  dataArray.forEach(createElement);
+  showInvoiceDetails(e);
+
+  body.classList.remove('edit-form');
+
+  console.log(dataArray[itemNameIndex].total);
 });

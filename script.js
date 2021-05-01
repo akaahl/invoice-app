@@ -415,6 +415,7 @@ function updateInvoice(obj) {
   });
 }
 
+let idOfObject;
 // Function to show invoice details
 function showInvoiceDetails(e) {
   if (e.target.classList.contains('article-element')) {
@@ -426,6 +427,8 @@ function showInvoiceDetails(e) {
       function selectIndex(num) {
         return num == 1 ? 0 : num == 7 ? 1 : num == 14 ? 2 : 3;
       }
+
+      idOfObject = item.id;
 
       // Populate form based on dataArray
       document.querySelector('.sender-street').value =
@@ -705,6 +708,8 @@ function generatePayDue(dateString, paymentTerm) {
 
 function updateInvoiceObject(obj) {
   // Update invoiceInfo object based on user's input
+  // console.log(obj.clientAddress);
+
   obj.clientAddress = {
     city: document.querySelector('.client-city').value,
     country: document.querySelector('.client-country').value,
@@ -864,14 +869,17 @@ sendBtn.addEventListener('click', e => {
 
 saveChangesBtn.addEventListener('click', e => {
   validateFields();
-  let itemNameIndex = dataArray.findIndex(
-    item => item.clientName == invoiceName
-  );
 
-  updateInvoiceObject(dataArray[itemNameIndex]);
-  sectionElement.textContent = '';
-  dataArray.forEach(createElement);
-  updateInvoice(dataArray[itemNameIndex]);
-  body.classList.remove('edit-form');
-  console.log(dataArray);
+  if (!fieldAlert) {
+    let itemNameIndex = dataArray.findIndex(item => item.id == idOfObject);
+
+    console.log(dataArray[itemNameIndex]);
+
+    updateInvoiceObject(dataArray[itemNameIndex]);
+
+    sectionElement.textContent = '';
+    dataArray.forEach(createElement);
+    updateInvoice(dataArray[itemNameIndex]);
+    body.classList.remove('edit-form');
+  }
 });

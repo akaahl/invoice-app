@@ -20,6 +20,9 @@ const saveAsDraftBtn = document.getElementById('draft-btn');
 const sendBtn = document.getElementById('send-btn');
 const saveChangesBtn = document.getElementById('save-changes-btn');
 const invoiceDetails = document.getElementById('invoice-info-section');
+const deleteModal = document.getElementById('delete-modal');
+const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 const dataUrl = `data.json`;
 let dataArray, fieldAlert, invoiceName;
 let invoiceInfo = {};
@@ -165,14 +168,15 @@ function formatDate(dateStr) {
 
 // Function to create element and push it into the DOM
 function createElement(item) {
-  const articleElement = document.createElement('article');
-  articleElement.classList.add(paymentStatus(item.status));
-  articleElement.classList.add('article-element');
-  articleElement.addEventListener('click', showInvoiceDetails);
+  if (item || item !== {}) {
+    const articleElement = document.createElement('article');
+    articleElement.classList.add(paymentStatus(item.status));
+    articleElement.classList.add('article-element');
+    articleElement.addEventListener('click', showInvoiceDetails);
 
-  formatDate(item.paymentDue);
+    formatDate(item.paymentDue);
 
-  articleElement.innerHTML = `
+    articleElement.innerHTML = `
           <div class="left-side">
             <p class="code-id"><span>#</span>${item.id}</p>
             <p class="due-date">Due ${formatDate(item.paymentDue)}</p>
@@ -195,7 +199,8 @@ function createElement(item) {
           </div>
     `;
 
-  sectionElement.appendChild(articleElement);
+    sectionElement.appendChild(articleElement);
+  }
 }
 
 // Update DOM on document load
@@ -247,12 +252,174 @@ function markAsPaid(arg) {
   dataArray.forEach(createElement);
 }
 
+// Function to delete invoice
+function deleteInvoice() {
+  deleteModal.classList.add('show');
+  console.log(deleteModal);
+}
+
+// Remove delete modal
+cancelDeleteBtn.addEventListener('click', () => {
+  deleteModal.classList.remove('show');
+});
+
+// Delete invoice from dataArray and DOM
+confirmDeleteBtn.addEventListener('click', e => {
+  deleteModal.classList.remove('show');
+
+  let objectIndex = dataArray.findIndex(item => item.clientName == invoiceName);
+  dataArray.splice(dataArray[objectIndex], 1);
+  sectionElement.textContent = '';
+  console.log(sectionElement);
+
+  dataArray.forEach(createElement);
+  goBack();
+});
+
+// Click anywhere outside modal to remove delete modal
+deleteModal.addEventListener('click', e => {
+  if (
+    e.target.matches('.delete-modal') &&
+    deleteModal.classList.contains('show')
+  ) {
+    deleteModal.classList.remove('show');
+  }
+});
+
+// Populate invoice details
+function updateInvoice(obj) {
+  invoiceDetails.innerHTML = `
+        <button type="button" class="back-btn" onclick="goBack()">
+          <img src="images/icon-arrow-left.svg" alt="left arrow icon" />
+          <p>Go back</p>
+        </button>
+
+        <div class="invoice-status ${obj.status}">
+          <p>Status</p>
+          <div class="status">
+            <i class="bx bxs-circle"></i>
+            <p>${obj.status.slice(0, 1).toUpperCase() + obj.status.slice(1)}</p>
+          </div>
+          <button type="button" class="edit-btn" id="edit-btn">Edit</button>
+          <button type="button" class="delete-btn" id="delete-btn">Delete</button>
+          <button type="button" class="mark-as-paid" onclick="markAsPaid(this)">Mark As Paid</button>
+        </div>
+
+        <div class="invoice-personal-details">
+          <div class="top">
+            <div class="left-side">
+              <h4 class="id">#<span>${obj.id}</span></h4>
+              <p class="description">${obj.description}</p>
+            </div>
+
+            <div class="right-side">
+              <p>${obj.senderAddress.street}</p>
+              <p>${obj.senderAddress.city}</p>
+              <p>${obj.senderAddress.postCode}</p>
+              <p>${obj.senderAddress.country}</p>
+            </div>
+          </div>
+
+          <div class="middle">
+            <div class="left-side">
+              <div class="date">
+                <p>Invoice Date</p>
+                <h4>${formatDate(obj.createdAt)}</h4>
+              </div>
+
+              <div class="due">
+                <p>Invoice Due</p>
+                <h4>${formatDate(obj.paymentDue)}</h4>
+              </div>
+            </div>
+
+            <div class="mid-side">
+              <p>Bill To</p>
+              <h4>${obj.clientName}</h4>
+              <p>${obj.clientAddress.street}</p>
+              <p>${obj.clientAddress.city}</p>
+              <p>${obj.clientAddress.postCode}</p>
+              <p>${obj.clientAddress.country}</p>
+            </div>
+
+            <div class="right-side">
+              <p>Sent To</p>
+              <h4>${obj.clientEmail}</h4>
+            </div>
+          </div>
+
+          <div class="bottom">
+            <div class="item-name" id="item-name">
+              <p class="name">Item Name</p>
+              
+            </div>
+
+            <div class="item-quantity" id="item-quantity">
+              <p class="quantity">QTY:</p>
+            </div>
+
+            <div class="item-price" id="item-price">
+              <p class="price">Price</p>
+            </div>
+
+            <div class="item-total" id="item-total">
+              <p class="total">Total</p>
+            </div>
+
+            <div class="amount-due">
+              <p class="due">Amount Due</p>
+              <p class="total">${
+                obj.total == '0.00'
+                  ? ''
+                  : currencySymbol(obj.clientAddress.country) + obj.total
+              }</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+  const editBtn = document.getElementById('edit-btn');
+  editBtn.addEventListener('click', editInvoice);
+
+  const deleteBtn = document.getElementById('delete-btn');
+  deleteBtn.addEventListener('click', deleteInvoice);
+
+  // Update the invoiceDetails item section
+  const itemName = document.getElementById('item-name');
+  const itemQuantity = document.getElementById('item-quantity');
+  const itemPrice = document.getElementById('item-price');
+  const itemTotal = document.getElementById('item-total');
+
+  const itemList = [...obj.items];
+
+  itemList.forEach(list => {
+    const nameElement = document.createElement('p');
+    nameElement.textContent = list.name;
+    itemName.appendChild(nameElement);
+
+    const quantityElement = document.createElement('p');
+    quantityElement.textContent = list.quantity;
+    itemQuantity.appendChild(quantityElement);
+
+    const priceElement = document.createElement('p');
+    priceElement.innerHTML = `${currencySymbol(obj.clientAddress.country)}${
+      list.price
+    }`;
+    itemPrice.appendChild(priceElement);
+
+    const totalElement = document.createElement('p');
+    totalElement.innerHTML = `${currencySymbol(obj.clientAddress.country)}${
+      list.total
+    }`;
+    itemTotal.appendChild(totalElement);
+  });
+}
+
 // Function to show invoice details
 function showInvoiceDetails(e) {
   if (e.target.classList.contains('article-element')) {
     invoiceName = this.children[0].children[2].innerText;
   }
-  console.log(invoiceName);
 
   dataArray.forEach(item => {
     if (item.clientName == invoiceName) {
@@ -289,130 +456,7 @@ function showInvoiceDetails(e) {
 
       // Then add new items based on the item array length
       item.items.forEach(addListItem);
-
-      console.log(item.clientName);
-
-      invoiceDetails.innerHTML = `
-        <button type="button" class="back-btn" onclick="goBack()">
-          <img src="images/icon-arrow-left.svg" alt="left arrow icon" />
-          <p>Go back</p>
-        </button>
-
-        <div class="invoice-status ${item.status}">
-          <p>Status</p>
-          <div class="status">
-            <i class="bx bxs-circle"></i>
-            <p>${
-              item.status.slice(0, 1).toUpperCase() + item.status.slice(1)
-            }</p>
-          </div>
-          <button type="button" class="edit-btn" onclick="editInvoice()">Edit</button>
-          <button type="button" class="delete-btn">Delete</button>
-          <button type="button" class="mark-as-paid" onclick="markAsPaid(this)">Mark As Paid</button>
-        </div>
-
-        <div class="invoice-personal-details">
-          <div class="top">
-            <div class="left-side">
-              <h4 class="id">#<span>${item.id}</span></h4>
-              <p class="description">${item.description}</p>
-            </div>
-
-            <div class="right-side">
-              <p>${item.senderAddress.street}</p>
-              <p>${item.senderAddress.city}</p>
-              <p>${item.senderAddress.postCode}</p>
-              <p>${item.senderAddress.country}</p>
-            </div>
-          </div>
-
-          <div class="middle">
-            <div class="left-side">
-              <div class="date">
-                <p>Invoice Date</p>
-                <h4>${formatDate(item.createdAt)}</h4>
-              </div>
-
-              <div class="due">
-                <p>Invoice Due</p>
-                <h4>${formatDate(item.paymentDue)}</h4>
-              </div>
-            </div>
-
-            <div class="mid-side">
-              <p>Bill To</p>
-              <h4>${item.clientName}</h4>
-              <p>${item.clientAddress.street}</p>
-              <p>${item.clientAddress.city}</p>
-              <p>${item.clientAddress.postCode}</p>
-              <p>${item.clientAddress.country}</p>
-            </div>
-
-            <div class="right-side">
-              <p>Sent To</p>
-              <h4>${item.clientEmail}</h4>
-            </div>
-          </div>
-
-          <div class="bottom">
-            <div class="item-name" id="item-name">
-              <p class="name">Item Name</p>
-              
-            </div>
-
-            <div class="item-quantity" id="item-quantity">
-              <p class="quantity">QTY:</p>
-            </div>
-
-            <div class="item-price" id="item-price">
-              <p class="price">Price</p>
-            </div>
-
-            <div class="item-total" id="item-total">
-              <p class="total">Total</p>
-            </div>
-
-            <div class="amount-due">
-              <p class="due">Amount Due</p>
-              <p class="total">${
-                item.total == '0.00'
-                  ? ''
-                  : currencySymbol(item.clientAddress.country) + item.total
-              }</p>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // Update the invoiceDetails item section
-      const itemName = document.getElementById('item-name');
-      const itemQuantity = document.getElementById('item-quantity');
-      const itemPrice = document.getElementById('item-price');
-      const itemTotal = document.getElementById('item-total');
-
-      const itemList = [...item.items];
-
-      itemList.forEach(list => {
-        const nameElement = document.createElement('p');
-        nameElement.textContent = list.name;
-        itemName.appendChild(nameElement);
-
-        const quantityElement = document.createElement('p');
-        quantityElement.textContent = list.quantity;
-        itemQuantity.appendChild(quantityElement);
-
-        const priceElement = document.createElement('p');
-        priceElement.innerHTML = `${currencySymbol(
-          item.clientAddress.country
-        )}${list.price}`;
-        itemPrice.appendChild(priceElement);
-
-        const totalElement = document.createElement('p');
-        totalElement.innerHTML = `${currencySymbol(
-          item.clientAddress.country
-        )}${list.total}`;
-        itemTotal.appendChild(totalElement);
-      });
+      updateInvoice(item);
 
       // Function to populate list of items value based on items array length
       function assignItemValues(arr1, arr2) {
@@ -425,10 +469,12 @@ function showInvoiceDetails(e) {
         }
       }
 
-      let nameArray = itemList.map(list => list.name);
-      let quantityArray = itemList.map(list => list.quantity);
-      let priceArray = itemList.map(list => list.price);
-      let totalArray = itemList.map(list => list.total);
+      const listOfItems = [...item.items];
+
+      let nameArray = listOfItems.map(list => list.name);
+      let quantityArray = listOfItems.map(list => list.quantity);
+      let priceArray = listOfItems.map(list => list.price);
+      let totalArray = listOfItems.map(list => list.total);
       const nameOfItem = document.querySelectorAll('.name-of-item');
       const quantityOfItem = document.querySelectorAll('.quantity-of-item');
       const priceOfItem = document.querySelectorAll('.price-of-item');
@@ -657,6 +703,54 @@ function generatePayDue(dateString, paymentTerm) {
   return output;
 }
 
+function updateInvoiceObject(obj) {
+  // Update invoiceInfo object based on user's input
+  obj.clientAddress = {
+    city: document.querySelector('.client-city').value,
+    country: document.querySelector('.client-country').value,
+    postCode: document.querySelector('.client-post-code').value,
+    street: document.querySelector('.client-street').value,
+  };
+
+  obj.clientEmail = document.querySelector('.client-email').value;
+  obj.clientName = document.querySelector('.client-name').value;
+  obj.createdAt = document.querySelector('.created-at').value;
+  obj.description = document.querySelector('.client-description').value;
+
+  obj.senderAddress = {
+    city: document.querySelector('.sender-city').value,
+    country: document.querySelector('.sender-country').value,
+    postCode: document.querySelector('.sender-post-code').value,
+    street: document.querySelector('.sender-street').value,
+  };
+
+  obj.items = [];
+
+  obj.paymentTerms = +document
+    .querySelector('.payment-terms')
+    .value.split('-')[1];
+
+  const paymentDue = generatePayDue(obj.createdAt, obj.paymentTerms);
+
+  obj.paymentDue = paymentDue;
+  obj.total;
+
+  if (document.querySelectorAll('.item')) {
+    document.querySelectorAll('.item').forEach(item => {
+      let moreItems = {
+        name: item.children[0].children[1].value,
+        price: item.children[2].children[1].value,
+        quantity: item.children[1].children[1].value,
+        total: +item.children[3].children[1].innerText,
+      };
+
+      obj.items.push(moreItems);
+    });
+
+    obj.total = obj.items.reduce((acc, item) => acc + item.total, 0).toFixed(2);
+  }
+}
+
 // Function to save form
 function saveFormInfo() {
   const alphabets = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
@@ -669,57 +763,8 @@ function saveFormInfo() {
     return Math.floor(1000 + Math.random() * 9000);
   }
 
-  // Update invoiceInfo object based on user's input
-  invoiceInfo.clientAddress = {
-    city: document.querySelector('.client-city').value,
-    country: document.querySelector('.client-country').value,
-    postCode: document.querySelector('.client-post-code').value,
-    street: document.querySelector('.client-street').value,
-  };
-
-  invoiceInfo.clientEmail = document.querySelector('.client-email').value;
-  invoiceInfo.clientName = document.querySelector('.client-name').value;
-  invoiceInfo.createdAt = document.querySelector('.created-at').value;
-  invoiceInfo.description = document.querySelector('.client-description').value;
-
-  invoiceInfo.senderAddress = {
-    city: document.querySelector('.sender-city').value,
-    country: document.querySelector('.sender-country').value,
-    postCode: document.querySelector('.sender-post-code').value,
-    street: document.querySelector('.sender-street').value,
-  };
-
   invoiceInfo.id = `${randomAlphabets()}${randomAlphabets()}${randomNumbers()}`;
-  invoiceInfo.items = [];
-
-  invoiceInfo.paymentTerms = +document
-    .querySelector('.payment-terms')
-    .value.split('-')[1];
-
-  const paymentDue = generatePayDue(
-    invoiceInfo.createdAt,
-    invoiceInfo.paymentTerms
-  );
-
-  invoiceInfo.paymentDue = paymentDue;
-  invoiceInfo.total;
-
-  if (document.querySelectorAll('.item')) {
-    document.querySelectorAll('.item').forEach(item => {
-      let moreItems = {
-        name: item.children[0].children[1].value,
-        price: item.children[2].children[1].value,
-        quantity: item.children[1].children[1].value,
-        total: +item.children[3].children[1].innerText,
-      };
-
-      invoiceInfo.items.push(moreItems);
-    });
-
-    invoiceInfo.total = invoiceInfo.items
-      .reduce((acc, item) => acc + item.total, 0)
-      .toFixed(2);
-  }
+  updateInvoiceObject(invoiceInfo);
 }
 
 // Function when save / send btn is clicked
@@ -823,84 +868,10 @@ saveChangesBtn.addEventListener('click', e => {
     item => item.clientName == invoiceName
   );
 
-  console.log(dataArray);
-  console.log(itemNameIndex);
-
-  dataArray[itemNameIndex].senderAddress.street = document.querySelector(
-    '.sender-street'
-  ).value;
-  dataArray[itemNameIndex].senderAddress.city = document.querySelector(
-    '.sender-city'
-  ).value;
-  dataArray[itemNameIndex].senderAddress.postCode = document.querySelector(
-    '.sender-post-code'
-  ).value;
-  dataArray[itemNameIndex].senderAddress.country = document.querySelector(
-    '.sender-country'
-  ).value;
-
-  dataArray[itemNameIndex].clientName = document.querySelector(
-    '.client-name'
-  ).value;
-  dataArray[itemNameIndex].clientEmail = document.querySelector(
-    '.client-email'
-  ).value;
-  dataArray[itemNameIndex].clientAddress.street = document.querySelector(
-    '.client-street'
-  ).value;
-  dataArray[itemNameIndex].clientAddress.city = document.querySelector(
-    '.client-city'
-  ).value;
-  dataArray[itemNameIndex].clientAddress.postCode = document.querySelector(
-    '.client-post-code'
-  ).value;
-  dataArray[itemNameIndex].clientAddress.country = document.querySelector(
-    '.client-country'
-  ).value;
-
-  dataArray[itemNameIndex].createdAt = document.querySelector(
-    '.created-at'
-  ).value;
-  dataArray[itemNameIndex].paymentTerms = +document
-    .querySelector('.payment-terms')
-    .value.split('-')[1];
-  dataArray[itemNameIndex].description = document.querySelector(
-    '.client-description'
-  ).value;
-  dataArray[itemNameIndex].paymentDue = generatePayDue(
-    dataArray[itemNameIndex].createdAt,
-    dataArray[itemNameIndex].paymentTerms
-  );
-  console.log(dataArray[itemNameIndex].items.total);
-
-  dataArray[itemNameIndex].items = [];
-
-  const listItemArray = document.querySelectorAll('.item');
-
-  if (listItemArray) {
-    let itemObject = {};
-
-    listItemArray.forEach(item => {
-      itemObject = {
-        name: item.children[0].children[1].value,
-        price: item.children[2].children[1].value,
-        quantity: item.children[1].children[1].value,
-        total: +item.children[3].children[1].innerText,
-      };
-
-      dataArray[itemNameIndex].items.push(itemObject);
-    });
-
-    dataArray[itemNameIndex].total = dataArray[itemNameIndex].items
-      .reduce((acc, item) => acc + item.total, 0)
-      .toFixed(2);
-  }
-
-  sectionElement.innerHTML = '';
+  updateInvoiceObject(dataArray[itemNameIndex]);
+  sectionElement.textContent = '';
   dataArray.forEach(createElement);
-  showInvoiceDetails(e);
-
+  updateInvoice(dataArray[itemNameIndex]);
   body.classList.remove('edit-form');
-
-  console.log(dataArray[itemNameIndex].total);
+  console.log(dataArray);
 });

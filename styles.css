@@ -422,6 +422,95 @@ body aside .mode-and-avatar .avatar i {
   font-size: 1.5rem;
 }
 
+body .delete-modal {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+body .delete-modal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+body .delete-modal.show .inner-container {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+body .delete-modal .inner-container {
+  width: 35%;
+  background: #fff;
+  border-radius: 5px;
+  padding: 3rem;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+body .delete-modal .inner-container p {
+  font-size: 12px;
+  margin-top: 1rem;
+  color: #888eb0;
+  line-height: 1.5rem;
+}
+
+body .delete-modal .inner-container .buttons {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+body .delete-modal .inner-container .buttons .cancel-delete-btn {
+  background: none;
+  border: none;
+  font-weight: 700;
+  color: #7b5cfa;
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 12px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+body .delete-modal .inner-container .buttons .cancel-delete-btn:hover {
+  background: #dfe3fa;
+}
+
+body .delete-modal .inner-container .buttons .confirm-delete-btn {
+  background: #ec5757;
+  border: none;
+  border-radius: 2rem;
+  padding: 1rem 1.5rem;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  -webkit-transition: 0.2s ease-in all;
+  transition: 0.2s ease-in all;
+  font-size: 12px;
+}
+
+body .delete-modal .inner-container .buttons .confirm-delete-btn:hover {
+  background: rgba(236, 87, 87, 0.7);
+}
+
 body main {
   min-height: 100vh;
   width: calc(100vw - 100px);

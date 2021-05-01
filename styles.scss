@@ -435,6 +435,85 @@ body {
     }
   }
 
+  .delete-modal {
+    // display: none;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba($black, 0.4);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease-in-out;
+
+    &.show {
+      // display: block;
+      visibility: visible;
+      opacity: 1;
+
+      .inner-container {
+        transform: scale(1);
+      }
+    }
+
+    .inner-container {
+      width: 35%;
+      background: $white;
+      border-radius: 5px;
+      padding: 3rem;
+      transform: scale(0);
+      transition: all 0.2s ease-in-out;
+
+      p {
+        font-size: 12px;
+        margin-top: 1rem;
+        color: $invoice-details-text-color;
+        line-height: 1.5rem;
+      }
+
+      .buttons {
+        margin-top: 1rem;
+        text-align: right;
+
+        .cancel-delete-btn {
+          background: none;
+          border: none;
+          font-weight: 700;
+          color: $violet;
+          cursor: pointer;
+          padding: 1rem 1.5rem;
+          border-radius: 2rem;
+          font-size: 12px;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            background: $pale-blue;
+          }
+        }
+
+        .confirm-delete-btn {
+          background: $pale-red;
+          border: none;
+          border-radius: 2rem;
+          padding: 1rem 1.5rem;
+          margin-right: 10px;
+          cursor: pointer;
+          color: $white;
+          font-weight: 700;
+          transition: 0.2s ease-in all;
+          font-size: 12px;
+
+          &:hover {
+            background: rgba($pale-red, 0.7);
+          }
+        }
+      }
+    }
+  }
+
   main {
     min-height: 100vh;
     width: calc(100vw - 100px);

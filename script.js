@@ -24,8 +24,15 @@ const deleteModal = document.getElementById('delete-modal');
 const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 const dataUrl = `data.json`;
-let dataArray, fieldAlert, invoiceName;
+let dataArray, fieldAlert, invoiceName, idOfObject;
 let invoiceInfo = {};
+
+// Function to remove article elements
+function removeArticles() {
+  const articleElementsArray = [...document.querySelectorAll('article')];
+
+  articleElementsArray.forEach(item => item.remove());
+}
 
 // Reset input fields in modal
 function resetInputFields() {
@@ -66,6 +73,7 @@ discardBtn.addEventListener('click', () => {
   resetInputFields();
 });
 
+// Remove edit form modal
 cancelBtn.addEventListener('click', () => {
   body.classList.remove('edit-form');
 });
@@ -177,25 +185,27 @@ function createElement(item) {
     formatDate(item.paymentDue);
 
     articleElement.innerHTML = `
-          <div class="left-side">
-            <p class="code-id"><span>#</span>${item.id}</p>
-            <p class="due-date">Due ${formatDate(item.paymentDue)}</p>
-            <p class="name">${item.clientName}</p>
+          <div class="child left-side">
+            <p class="grand-child code-id"><span>#</span>${item.id}</p>
+            <p class="grand-child due-date">Due ${formatDate(
+              item.paymentDue
+            )}</p>
+            <p class="grand-child name">${item.clientName}</p>
           </div>
 
-          <div class="right-side">
-            <p class="amount">${
+          <div class="child right-side">
+            <p class="grand-child amount">${
               item.total == '0.00'
                 ? ''
                 : currencySymbol(item.clientAddress.country) + item.total
             }</p>
-            <div class="status">
-              <i class="bx bxs-circle"></i>
-              <p>${
+            <div class="grand-child status">
+              <i class="bx bxs-circle grand-grand-child"></i>
+              <p class="grand-grand-child">${
                 item.status.slice(0, 1).toUpperCase() + item.status.slice(1)
               }</p>
             </div>
-            <img src="images/icon-arrow-right.svg" alt="right arrow icon" />
+            <img class="grand-child" src="images/icon-arrow-right.svg" alt="right arrow icon" />
           </div>
     `;
 
@@ -248,30 +258,30 @@ function markAsPaid(arg) {
   let itemIndex = dataArray.findIndex(item => item.id == itemId);
   dataArray[itemIndex].status = 'paid';
 
-  sectionElement.innerHTML = '';
+  removeArticles();
   dataArray.forEach(createElement);
 }
 
 // Function to delete invoice
 function deleteInvoice() {
   deleteModal.classList.add('show');
-  console.log(deleteModal);
+  const deleteMsg = document.getElementById('delete-msg');
+  deleteMsg.innerHTML = `Are you sure you want to delete invoice ${idOfObject}? This action cannot be undone.`;
+  body.style.overflowY = 'hidden';
 }
 
 // Remove delete modal
 cancelDeleteBtn.addEventListener('click', () => {
   deleteModal.classList.remove('show');
+  body.style.overflowY = 'scroll';
 });
 
 // Delete invoice from dataArray and DOM
 confirmDeleteBtn.addEventListener('click', e => {
   deleteModal.classList.remove('show');
-
-  let objectIndex = dataArray.findIndex(item => item.clientName == invoiceName);
-  dataArray.splice(dataArray[objectIndex], 1);
-  sectionElement.textContent = '';
-  console.log(sectionElement);
-
+  let objectIndex = dataArray.findIndex(item => item.id == idOfObject);
+  dataArray.splice(objectIndex, 1);
+  removeArticles();
   dataArray.forEach(createElement);
   goBack();
 });
@@ -283,6 +293,7 @@ deleteModal.addEventListener('click', e => {
     deleteModal.classList.contains('show')
   ) {
     deleteModal.classList.remove('show');
+    body.style.overflowY = 'scroll';
   }
 });
 
@@ -415,20 +426,37 @@ function updateInvoice(obj) {
   });
 }
 
-let idOfObject;
 // Function to show invoice details
 function showInvoiceDetails(e) {
+  let id;
+
+  if (e.target.classList.contains('child')) {
+    id = e.target.parentElement.children[0].children[0].innerText.slice(1);
+  }
+
+  if (e.target.classList.contains('grand-child')) {
+    id = e.target.parentElement.parentElement.children[0].children[0].innerText.slice(
+      1
+    );
+  }
+
+  if (e.target.classList.contains('grand-grand-child')) {
+    id = e.target.parentElement.parentElement.parentElement.children[0].children[0].innerText.slice(
+      1
+    );
+  }
+
   if (e.target.classList.contains('article-element')) {
-    invoiceName = this.children[0].children[2].innerText;
+    id = e.target.children[0].children[0].innerText.slice(1);
   }
 
   dataArray.forEach(item => {
-    if (item.clientName == invoiceName) {
+    if (item.id == id) {
       function selectIndex(num) {
         return num == 1 ? 0 : num == 7 ? 1 : num == 14 ? 2 : 3;
       }
 
-      idOfObject = item.id;
+      idOfObject = id;
 
       // Populate form based on dataArray
       document.querySelector('.sender-street').value =
@@ -455,7 +483,7 @@ function showInvoiceDetails(e) {
 
       // Delete all item elements first
       const items = document.querySelectorAll('.item');
-      items.forEach(item => item.remove());
+      items.forEach(item => item.parentElement.removeChild(item));
 
       // Then add new items based on the item array length
       item.items.forEach(addListItem);
@@ -488,18 +516,18 @@ function showInvoiceDetails(e) {
       assignItemValues(priceOfItem, priceArray);
       assignItemValues(totalOfItem, totalArray);
     }
-  });
 
-  mainContainer.classList.add('show-invoice-details');
-  setTimeout(() => {
-    sectionElement.style.display = 'none';
-    header.style.display = 'none';
-    invoiceDetails.style.display = 'flex';
+    mainContainer.classList.add('show-invoice-details');
+    setTimeout(() => {
+      sectionElement.style.display = 'none';
+      header.style.display = 'none';
+      invoiceDetails.style.display = 'flex';
+    }, 350);
 
     setTimeout(() => {
       invoiceDetails.classList.add('show-invoice-info');
-    }, 200);
-  }, 350);
+    }, 400);
+  });
 }
 
 // Allow dynamic filter functionality based on payment status
@@ -541,6 +569,8 @@ checkboxes.forEach(checkbox => {
           if (isHidden) {
             hiddenArticles.push(article);
           }
+        } else {
+          sectionElement.classList.remove('show-empty');
         }
       }
 
@@ -554,6 +584,13 @@ checkboxes.forEach(checkbox => {
 
       for (let m = 0; m < hiddenArticles.length; m++) {
         hiddenArticles[m].style.display = 'none';
+      }
+
+      // If the filter checkedboxes do not exist
+      if (hiddenArticles.length == articles.length) {
+        sectionElement.classList.add('show-empty');
+      } else {
+        sectionElement.classList.remove('show-empty');
       }
     }
 
@@ -708,7 +745,6 @@ function generatePayDue(dateString, paymentTerm) {
 
 function updateInvoiceObject(obj) {
   // Update invoiceInfo object based on user's input
-  // console.log(obj.clientAddress);
 
   obj.clientAddress = {
     city: document.querySelector('.client-city').value,
@@ -872,12 +908,8 @@ saveChangesBtn.addEventListener('click', e => {
 
   if (!fieldAlert) {
     let itemNameIndex = dataArray.findIndex(item => item.id == idOfObject);
-
-    console.log(dataArray[itemNameIndex]);
-
     updateInvoiceObject(dataArray[itemNameIndex]);
-
-    sectionElement.textContent = '';
+    removeArticles();
     dataArray.forEach(createElement);
     updateInvoice(dataArray[itemNameIndex]);
     body.classList.remove('edit-form');

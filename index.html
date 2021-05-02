@@ -48,10 +48,7 @@
     <div class="delete-modal" id="delete-modal">
       <div class="inner-container">
         <h2>Confirm Deletion</h2>
-        <p>
-          Are you sure you want to delete invoice KA4251? This action cannot be
-          undone.
-        </p>
+        <p id="delete-msg"></p>
         <div class="buttons">
           <button
             type="button"
@@ -110,7 +107,19 @@
         </div>
       </header>
 
-      <section id="section-element"></section>
+      <section id="section-element">
+        <div class="empty-section">
+          <img
+            src="images/illustration-empty.svg"
+            alt="Empty icon illustration"
+          />
+          <h2>There is nothing here</h2>
+          <p>
+            Create an invoice by clicking the <strong>New</strong> button and
+            get started
+          </p>
+        </div>
+      </section>
 
       <div class="invoice-info-section" id="invoice-info-section"></div>
 

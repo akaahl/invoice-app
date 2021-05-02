@@ -75,6 +75,18 @@ body[data-theme='dark'] aside .mode-and-avatar .modes .light-mode-icon {
   display: block;
 }
 
+body[data-theme='dark'] .delete-modal .inner-container {
+  background: #1e2139;
+}
+
+body[data-theme='dark'] .delete-modal .inner-container h2 {
+  color: #fff;
+}
+
+body[data-theme='dark'] .delete-modal .inner-container p {
+  color: #dfe3fa;
+}
+
 body[data-theme='dark'] main header .invoice-details h1 {
   color: #fff;
 }
@@ -465,10 +477,9 @@ body .delete-modal .inner-container {
 }
 
 body .delete-modal .inner-container p {
-  font-size: 12px;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   color: #888eb0;
-  line-height: 1.5rem;
+  line-height: 1.7rem;
 }
 
 body .delete-modal .inner-container .buttons {
@@ -482,6 +493,7 @@ body .delete-modal .inner-container .buttons .cancel-delete-btn {
   font-weight: 700;
   color: #7b5cfa;
   cursor: pointer;
+  margin-right: 10px;
   padding: 1rem 1.5rem;
   border-radius: 2rem;
   font-size: 12px;
@@ -759,6 +771,12 @@ body main section {
   transition: all 0.3s ease-in-out;
 }
 
+body main section.show-empty .empty-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 body main section article {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -886,6 +904,38 @@ body main section article .right-side .status p {
   font-size: 0.8rem;
   font-weight: 700;
   color: #000;
+}
+
+body main section .empty-section {
+  height: 100%;
+  width: 100%;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+body main section .empty-section img {
+  height: 400px;
+  width: 500px;
+}
+
+body main section .empty-section h2 {
+  margin-top: 2rem;
+}
+
+body main section .empty-section p {
+  margin-top: 1rem;
+  width: 30%;
+  text-align: center;
 }
 
 body main .invoice-info-section {

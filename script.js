@@ -57,6 +57,7 @@ setColorMode();
 addNewInvoiceBtn.addEventListener('click', () => {
   body.classList.add('form-show');
   body.style.overflowY = 'hidden';
+  formContent.scrollTo(0, 0);
   resetInputFields();
 });
 
@@ -189,9 +190,15 @@ function createElement(item) {
               item.paymentDue
             )}</p>
             <p class="grand-child name">${item.clientName}</p>
+            <p class="grand-child amount">${
+              item.total == '0.00'
+                ? ''
+                : currencySymbol(item.clientAddress.country) + item.total
+            }</p>
           </div>
 
           <div class="child right-side">
+          <p class="grand-child name">${item.clientName}</p>
             <p class="grand-child amount">${
               item.total == '0.00'
                 ? ''
@@ -240,6 +247,7 @@ function goBack() {
 function editInvoice(e) {
   body.classList.add('edit-form');
   body.style.overflowY = 'hidden';
+  formContent.scrollTo(0, 0);
 
   const parentElement = e.target.parentElement;
 

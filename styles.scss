@@ -161,7 +161,8 @@ body {
 
           .left-side {
             .code-id,
-            .name {
+            .name,
+            .amount {
               color: $white;
             }
 
@@ -171,7 +172,8 @@ body {
           }
 
           .right-side {
-            .amount {
+            .amount,
+            .name {
               color: $white;
             }
           }
@@ -822,9 +824,21 @@ body {
             font-size: 0.8rem;
             color: darkgrey;
           }
+
+          .amount {
+            font-weight: 700;
+            display: none;
+          }
         }
 
         .right-side {
+          .name {
+            font-size: 0.8rem;
+
+            color: darkgrey;
+            display: none;
+          }
+
           .amount {
             font-weight: 700;
             margin-right: 2rem;
@@ -1587,7 +1601,7 @@ body {
           outline: none;
           border: none;
           border-radius: 2rem;
-          padding: 1rem 2rem;
+          padding: clamp(0.5rem, 1rem, 1.5rem) clamp(1rem, 2rem, 2.5rem);
           color: $text-color;
           background: $white;
           font-weight: 800;
@@ -1603,7 +1617,7 @@ body {
           grid-area: draft;
           outline: none;
           border: none;
-          padding: 1rem;
+          padding: clamp(0.5rem, 1rem, 1.5rem);
           border-radius: 2rem;
           background: $dark-grayish-blue;
           font-size: 12px;
@@ -1622,7 +1636,8 @@ body {
           grid-area: send;
           outline: none;
           border: none;
-          padding: 1rem;
+          padding: clamp(0.5rem, 1rem, 1.5rem);
+
           border-radius: 2rem;
           width: 8rem;
           font-weight: 700;
@@ -1669,6 +1684,172 @@ body {
 
           &:hover {
             background: rgba($violet, 0.8);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  body {
+    aside {
+      height: 4rem;
+      width: 100vw;
+      top: 0;
+      flex-direction: row;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      .logo-container {
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        height: 4rem;
+        width: 4rem;
+
+        .bottom-half {
+          border-bottom-right-radius: 1rem;
+        }
+      }
+
+      .mode-and-avatar {
+        flex-direction: row;
+        width: 10rem;
+        height: 100%;
+
+        .modes,
+        .avatar {
+          height: 100%;
+        }
+
+        .modes {
+          border-bottom: none;
+          border-right: 1px solid #494e6e;
+        }
+      }
+    }
+
+    main {
+      margin-top: 2rem;
+      width: 100vw;
+      margin-left: 0;
+
+      header {
+        width: 90%;
+      }
+
+      section {
+        width: 90%;
+      }
+
+      .invoice-info-section {
+        width: 90%;
+      }
+
+      form {
+        .inner-container {
+          height: calc(100vh - 4rem) !important;
+          padding: 3rem 2rem 1rem 2rem !important;
+          top: 4rem;
+          width: 80%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    main {
+      header {
+        .right-side {
+          .filter-section {
+            margin-right: 1.5rem;
+          }
+        }
+      }
+
+      section {
+        article {
+          padding: 1rem;
+
+          .left-side,
+          .right-side {
+            flex-direction: column;
+            margin-left: 0;
+          }
+
+          .left-side {
+            align-items: flex-start;
+            .name {
+              display: none;
+            }
+
+            .amount {
+              display: block;
+              margin: 0.5rem 0 0 0;
+            }
+
+            .due-date {
+              margin: 2rem 0 0 0;
+            }
+          }
+
+          .right-side {
+            align-items: flex-end;
+
+            .amount,
+            img {
+              display: none;
+            }
+
+            .name {
+              display: block;
+              text-align: right;
+            }
+
+            .status {
+              margin: 2rem 0 0;
+            }
+          }
+        }
+      }
+
+      .invoice-info-section {
+        .invoice-personal-details {
+          .top {
+            flex-direction: column;
+
+            .right-side {
+              margin-top: 3rem;
+              p {
+                text-align: left;
+              }
+            }
+          }
+
+          .middle {
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 4rem 0;
+          }
+
+          .bottom {
+            margin-top: 5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 590px) {
+  body {
+    main {
+      form {
+        .inner-container {
+          .button-selections {
+            display: flex;
+            align-items: center;
           }
         }
       }

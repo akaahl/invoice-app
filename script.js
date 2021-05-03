@@ -25,14 +25,6 @@ const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 const dataUrl = `data.json`;
 let dataArray, fieldAlert, invoiceName, idOfObject;
-let invoiceInfo = {};
-
-// Function to remove article elements
-function removeArticles() {
-  const articleElementsArray = [...document.querySelectorAll('article')];
-
-  articleElementsArray.forEach(item => item.remove());
-}
 
 // Reset input fields in modal
 function resetInputFields() {
@@ -64,18 +56,21 @@ setColorMode();
 // Show form modal
 addNewInvoiceBtn.addEventListener('click', () => {
   body.classList.add('form-show');
+  body.style.overflowY = 'hidden';
   resetInputFields();
 });
 
 // Remove form modal
 discardBtn.addEventListener('click', () => {
   body.classList.remove('form-show');
+  body.style.overflowY = 'scroll';
   resetInputFields();
 });
 
 // Remove edit form modal
 cancelBtn.addEventListener('click', () => {
   body.classList.remove('edit-form');
+  body.style.overflowY = 'scroll';
 });
 
 // Format datepicker based on today's date (form modal)
@@ -93,6 +88,7 @@ formContainer.addEventListener('click', e => {
     body.classList.contains('edit-form')
   ) {
     body.classList.remove('edit-form');
+    body.style.overflowY = 'scroll';
   }
 
   if (
@@ -100,6 +96,8 @@ formContainer.addEventListener('click', e => {
     body.classList.contains('form-show')
   ) {
     body.classList.remove('form-show');
+    body.style.overflowY = 'scroll';
+
     resetInputFields();
   }
 });
@@ -222,7 +220,7 @@ async function initialUpdateDOM() {
 
 initialUpdateDOM();
 
-// Self explanatory
+// Go back to home page in DOM
 function goBack() {
   invoiceDetails.classList.remove('show-invoice-info');
   // invoiceName = undefined;
@@ -239,8 +237,24 @@ function goBack() {
 }
 
 // Allow edit functionality on invoice details
-function editInvoice() {
+function editInvoice(e) {
   body.classList.add('edit-form');
+  body.style.overflowY = 'hidden';
+
+  const parentElement = e.target.parentElement;
+
+  if (
+    parentElement.classList.contains('pending') ||
+    parentElement.classList.contains('paid')
+  ) {
+    validateFields();
+  }
+}
+
+// Function to remove article elements
+function removeArticles() {
+  const articleElementsArray = [...document.querySelectorAll('article')];
+  articleElementsArray.forEach(item => item.remove());
 }
 
 // Function to mark as paid
@@ -298,18 +312,21 @@ deleteModal.addEventListener('click', e => {
 });
 
 // Populate invoice details
-function updateInvoice(obj) {
+function updateInvoice(invoiceInfo) {
   invoiceDetails.innerHTML = `
         <button type="button" class="back-btn" onclick="goBack()">
           <img src="images/icon-arrow-left.svg" alt="left arrow icon" />
           <p>Go back</p>
         </button>
 
-        <div class="invoice-status ${obj.status}">
+        <div class="invoice-status ${invoiceInfo.status}">
           <p>Status</p>
           <div class="status">
             <i class="bx bxs-circle"></i>
-            <p>${obj.status.slice(0, 1).toUpperCase() + obj.status.slice(1)}</p>
+            <p>${
+              invoiceInfo.status.slice(0, 1).toUpperCase() +
+              invoiceInfo.status.slice(1)
+            }</p>
           </div>
           <button type="button" class="edit-btn" id="edit-btn">Edit</button>
           <button type="button" class="delete-btn" id="delete-btn">Delete</button>
@@ -319,15 +336,15 @@ function updateInvoice(obj) {
         <div class="invoice-personal-details">
           <div class="top">
             <div class="left-side">
-              <h4 class="id">#<span>${obj.id}</span></h4>
-              <p class="description">${obj.description}</p>
+              <h4 class="id">#<span>${invoiceInfo.id}</span></h4>
+              <p class="description">${invoiceInfo.description}</p>
             </div>
 
             <div class="right-side">
-              <p>${obj.senderAddress.street}</p>
-              <p>${obj.senderAddress.city}</p>
-              <p>${obj.senderAddress.postCode}</p>
-              <p>${obj.senderAddress.country}</p>
+              <p>${invoiceInfo.senderAddress.street}</p>
+              <p>${invoiceInfo.senderAddress.city}</p>
+              <p>${invoiceInfo.senderAddress.postCode}</p>
+              <p>${invoiceInfo.senderAddress.country}</p>
             </div>
           </div>
 
@@ -335,27 +352,27 @@ function updateInvoice(obj) {
             <div class="left-side">
               <div class="date">
                 <p>Invoice Date</p>
-                <h4>${formatDate(obj.createdAt)}</h4>
+                <h4>${formatDate(invoiceInfo.createdAt)}</h4>
               </div>
 
               <div class="due">
                 <p>Invoice Due</p>
-                <h4>${formatDate(obj.paymentDue)}</h4>
+                <h4>${formatDate(invoiceInfo.paymentDue)}</h4>
               </div>
             </div>
 
             <div class="mid-side">
               <p>Bill To</p>
-              <h4>${obj.clientName}</h4>
-              <p>${obj.clientAddress.street}</p>
-              <p>${obj.clientAddress.city}</p>
-              <p>${obj.clientAddress.postCode}</p>
-              <p>${obj.clientAddress.country}</p>
+              <h4>${invoiceInfo.clientName}</h4>
+              <p>${invoiceInfo.clientAddress.street}</p>
+              <p>${invoiceInfo.clientAddress.city}</p>
+              <p>${invoiceInfo.clientAddress.postCode}</p>
+              <p>${invoiceInfo.clientAddress.country}</p>
             </div>
 
             <div class="right-side">
               <p>Sent To</p>
-              <h4>${obj.clientEmail}</h4>
+              <h4>${invoiceInfo.clientEmail}</h4>
             </div>
           </div>
 
@@ -380,9 +397,10 @@ function updateInvoice(obj) {
             <div class="amount-due">
               <p class="due">Amount Due</p>
               <p class="total">${
-                obj.total == '0.00'
+                invoiceInfo.total == '0.00'
                   ? ''
-                  : currencySymbol(obj.clientAddress.country) + obj.total
+                  : currencySymbol(invoiceInfo.clientAddress.country) +
+                    invoiceInfo.total
               }</p>
             </div>
           </div>
@@ -401,7 +419,7 @@ function updateInvoice(obj) {
   const itemPrice = document.getElementById('item-price');
   const itemTotal = document.getElementById('item-total');
 
-  const itemList = [...obj.items];
+  const itemList = [...invoiceInfo.items];
 
   itemList.forEach(list => {
     const nameElement = document.createElement('p');
@@ -413,15 +431,15 @@ function updateInvoice(obj) {
     itemQuantity.appendChild(quantityElement);
 
     const priceElement = document.createElement('p');
-    priceElement.innerHTML = `${currencySymbol(obj.clientAddress.country)}${
-      list.price
-    }`;
+    priceElement.innerHTML = `${currencySymbol(
+      invoiceInfo.clientAddress.country
+    )}${list.price}`;
     itemPrice.appendChild(priceElement);
 
     const totalElement = document.createElement('p');
-    totalElement.innerHTML = `${currencySymbol(obj.clientAddress.country)}${
-      list.total
-    }`;
+    totalElement.innerHTML = `${currencySymbol(
+      invoiceInfo.clientAddress.country
+    )}${list.total}`;
     itemTotal.appendChild(totalElement);
   });
 }
@@ -448,10 +466,12 @@ function showInvoiceDetails(e) {
 
   if (e.target.classList.contains('article-element')) {
     id = e.target.children[0].children[0].innerText.slice(1);
+    console.log(dataArray);
   }
 
   dataArray.forEach(item => {
     if (item.id == id) {
+      // Update payment terms based on select index value
       function selectIndex(num) {
         return num == 1 ? 0 : num == 7 ? 1 : num == 14 ? 2 : 3;
       }
@@ -515,18 +535,18 @@ function showInvoiceDetails(e) {
       assignItemValues(quantityOfItem, quantityArray);
       assignItemValues(priceOfItem, priceArray);
       assignItemValues(totalOfItem, totalArray);
+
+      mainContainer.classList.add('show-invoice-details');
+      setTimeout(() => {
+        sectionElement.style.display = 'none';
+        header.style.display = 'none';
+        invoiceDetails.style.display = 'flex';
+      }, 350);
+
+      setTimeout(() => {
+        invoiceDetails.classList.add('show-invoice-info');
+      }, 400);
     }
-
-    mainContainer.classList.add('show-invoice-details');
-    setTimeout(() => {
-      sectionElement.style.display = 'none';
-      header.style.display = 'none';
-      invoiceDetails.style.display = 'flex';
-    }, 350);
-
-    setTimeout(() => {
-      invoiceDetails.classList.add('show-invoice-info');
-    }, 400);
   });
 }
 
@@ -743,9 +763,9 @@ function generatePayDue(dateString, paymentTerm) {
   return output;
 }
 
-function updateInvoiceObject(obj) {
+// Can reuse this function in saveChangesBtn
+function updateObj(obj) {
   // Update invoiceInfo object based on user's input
-
   obj.clientAddress = {
     city: document.querySelector('.client-city').value,
     country: document.querySelector('.client-country').value,
@@ -792,8 +812,9 @@ function updateInvoiceObject(obj) {
   }
 }
 
-// Function to save form
-function saveFormInfo() {
+function updateInvoiceObject(obj = {}) {
+  updateObj(obj);
+
   const alphabets = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
 
   function randomAlphabets() {
@@ -804,46 +825,46 @@ function saveFormInfo() {
     return Math.floor(1000 + Math.random() * 9000);
   }
 
-  invoiceInfo.id = `${randomAlphabets()}${randomAlphabets()}${randomNumbers()}`;
-  updateInvoiceObject(invoiceInfo);
+  obj.id = `${randomAlphabets()}${randomAlphabets()}${randomNumbers()}`;
+  dataArray.unshift(obj);
 }
 
 // Function when save / send btn is clicked
 function updateElements() {
-  let lastElement, firstElement;
-
-  // Function to move the last element into the first DOM position
-  function moveElement(first, second) {
-    sectionElement.insertBefore(first, second);
-  }
-
-  saveFormInfo();
-  dataArray.unshift(invoiceInfo);
-  createElement(dataArray[0]);
-  lastElement = [...document.querySelectorAll('article')].pop();
-  firstElement = [...document.querySelectorAll('article')].shift();
-  moveElement(lastElement, firstElement);
+  updateInvoiceObject();
   body.classList.remove('form-show');
+}
+
+// Function to move the last element into the first DOM position
+function moveElement() {
+  let lastElement = [...document.querySelectorAll('article')].pop(),
+    firstElement = [...document.querySelectorAll('article')].shift();
+  sectionElement.insertBefore(lastElement, firstElement);
 }
 
 // Save all the information and add it into dataArray
 saveAsDraftBtn.addEventListener('click', e => {
-  invoiceInfo.status = 'draft';
   updateElements();
+  dataArray[0].status = 'draft';
+  createElement(dataArray[0]);
+  moveElement();
   resetInputFields();
+  body.style.overflowY = 'scroll';
 });
 
 // Function to update elements in DOM if fieldAlert is false and reset input fields
 function update(alert) {
   if (!alert && document.querySelector('.item')) {
     // If all fields are filled and validated, then save the form info and update into DOM
-    invoiceInfo.status = 'paid';
     updateElements();
+    dataArray[0].status = 'pending';
+    createElement(dataArray[0]);
+    moveElement();
     resetInputFields();
   }
 }
 
-// To be used in sendBtn click event
+// To be used in sendBtn click event (show/remove text alert)
 function updateFormAlert(alert) {
   const fieldEmptyElement = document.getElementById('field-alert');
   const itemEmptyElement = document.getElementById('item-alert');
@@ -893,6 +914,8 @@ function validateFields() {
   fieldsArray.every(field => {
     if (field.value !== '') {
       fieldAlert = false;
+      fieldsValid(field);
+      updateFormAlert(fieldAlert);
     }
   });
 }
@@ -901,6 +924,7 @@ function validateFields() {
 sendBtn.addEventListener('click', e => {
   validateFields();
   update(fieldAlert);
+  body.style.overflowY = 'scroll';
 });
 
 saveChangesBtn.addEventListener('click', e => {
@@ -908,10 +932,11 @@ saveChangesBtn.addEventListener('click', e => {
 
   if (!fieldAlert) {
     let itemNameIndex = dataArray.findIndex(item => item.id == idOfObject);
-    updateInvoiceObject(dataArray[itemNameIndex]);
+    updateObj(dataArray[itemNameIndex]);
     removeArticles();
     dataArray.forEach(createElement);
     updateInvoice(dataArray[itemNameIndex]);
     body.classList.remove('edit-form');
+    body.style.overflowY = 'scroll';
   }
 });

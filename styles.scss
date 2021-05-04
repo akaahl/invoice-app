@@ -140,6 +140,16 @@ body {
       }
 
       section {
+        .empty-section {
+          h2 {
+            color: $white;
+          }
+
+          p {
+            color: $pale-blue;
+          }
+        }
+
         article {
           background: $dark-article-bg;
 

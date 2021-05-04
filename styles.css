@@ -111,6 +111,14 @@ body[data-theme='dark'] main header .right-side .filter-section ul li input[type
   background: #1e2139;
 }
 
+body[data-theme='dark'] main section .empty-section h2 {
+  color: #fff;
+}
+
+body[data-theme='dark'] main section .empty-section p {
+  color: #dfe3fa;
+}
+
 body[data-theme='dark'] main section article {
   background: #1e2139;
 }

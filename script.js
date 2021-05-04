@@ -1,5 +1,6 @@
 const body = document.getElementsByTagName('body')[0];
 const modeSelector = document.querySelector('.modes');
+const totalInvoices = document.getElementById('total-invoices');
 const addNewInvoiceBtn = document.getElementById('add-new-invoice');
 const filterContainer = document.getElementById('filter-container');
 const filterContent = document.getElementById('filter-content');
@@ -223,6 +224,9 @@ async function initialUpdateDOM() {
   dataArray = [...(await getData(dataUrl))];
 
   dataArray.forEach(createElement);
+
+  // Set total number of invoices
+  totalInvoices.innerText = `There are ${dataArray.length} total invoices`;
 }
 
 initialUpdateDOM();
@@ -306,6 +310,7 @@ confirmDeleteBtn.addEventListener('click', e => {
   removeArticles();
   dataArray.forEach(createElement);
   goBack();
+  body.style.overflowY = 'scroll';
 });
 
 // Click anywhere outside modal to remove delete modal

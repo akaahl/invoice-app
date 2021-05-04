@@ -627,6 +627,10 @@ body main header .right-side .filter-section .filter-container.show img {
           transform: rotate(180deg);
 }
 
+body main header .right-side .filter-section .filter-container .short-word {
+  display: none;
+}
+
 body main header .right-side .filter-section ul {
   display: none;
   background: #fff;
@@ -717,7 +721,7 @@ body main header .right-side button {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  width: 150px;
+  max-width: 150px;
   padding: 0.5rem;
   border-radius: 2rem;
   border: none;
@@ -757,6 +761,10 @@ body main header .right-side button p {
   margin-left: 0.5rem;
   font-weight: 700;
   color: #fff;
+}
+
+body main header .right-side button .short-word {
+  display: none;
 }
 
 body main section {
@@ -1390,8 +1398,6 @@ body form {
   z-index: 5;
   display: block;
   visibility: hidden;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
   opacity: 0;
 }
 
@@ -2014,13 +2020,53 @@ body form .inner-container .button-selections .save-changes-btn:hover {
 }
 
 @media (max-width: 590px) {
+  body main form .inner-container {
+    width: 100%;
+  }
+  body main form .inner-container .form-content {
+    height: 60%;
+  }
   body main form .inner-container .button-selections {
+    margin-top: 3rem;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
+  }
+  body main form .inner-container .button-selections button {
+    font-size: 0.6rem !important;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 425px) {
+  body main header .invoice-details h1 {
+    font-size: 1rem;
+  }
+  body main header .invoice-details p {
+    font-size: 0.6rem !important;
+  }
+  body main header .right-side .filter-section {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-right: 2rem;
+  }
+  body main header .right-side .filter-section .filter-container {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  body main header .right-side p {
+    font-size: 0.6rem !important;
+  }
+  body main header .right-side .long-word {
+    display: none;
+  }
+  body main header .right-side .short-word {
+    display: block;
   }
 }
 /*# sourceMappingURL=styles.css.map */

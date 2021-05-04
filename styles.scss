@@ -559,6 +559,7 @@ body {
       .invoice-details {
         h1 {
           font-weight: 700;
+          // font-size: clamp(0.5rem, 2rem, 2.5rem);
         }
 
         p {
@@ -603,6 +604,10 @@ body {
               img {
                 transform: rotate(180deg);
               }
+            }
+
+            .short-word {
+              display: none;
             }
           }
 
@@ -680,7 +685,7 @@ body {
           display: flex;
           align-items: center;
           justify-content: flex-start;
-          width: 150px;
+          max-width: 150px;
           padding: 0.5rem;
           border-radius: 2rem;
           border: none;
@@ -711,6 +716,10 @@ body {
             margin-left: 0.5rem;
             font-weight: 700;
             color: $white;
+          }
+
+          .short-word {
+            display: none;
           }
         }
       }
@@ -1286,7 +1295,7 @@ body {
     z-index: 5;
     display: block;
     visibility: hidden;
-    transition: all 0.2s ease-in-out;
+    // transition: all 0.2s ease-in-out;
     opacity: 0;
 
     .inner-container {
@@ -1847,9 +1856,61 @@ body {
     main {
       form {
         .inner-container {
+          width: 100%;
+
+          .form-content {
+            height: 60%;
+          }
+
           .button-selections {
+            margin-top: 3rem;
             display: flex;
             align-items: center;
+
+            button {
+              font-size: 0.6rem !important;
+              padding: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  body {
+    main {
+      header {
+        .invoice-details {
+          h1 {
+            font-size: 1rem;
+          }
+
+          p {
+            font-size: 0.6rem !important;
+          }
+        }
+
+        .right-side {
+          .filter-section {
+            justify-content: center;
+            margin-right: 2rem;
+            .filter-container {
+              justify-content: center;
+            }
+          }
+
+          p {
+            font-size: 0.6rem !important;
+          }
+
+          .long-word {
+            display: none;
+          }
+
+          .short-word {
+            display: block;
           }
         }
       }
